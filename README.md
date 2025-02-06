@@ -1,16 +1,14 @@
-# git_tracker
+![playstore](https://github.com/user-attachments/assets/b284d153-54de-4f0d-b7eb-b40c39a7b3e4)
 
-A new Flutter project.
+#Git Trackar
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+- Used Pattern MVC Pattern
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### List of Dependency Used
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Getx](https://pub.dev/packages/get) For State management
+- [Share Preference](https://pub.dev/packages/shared_preferences) For storing small data(User Logged in or not)
+- [http](https://pub.dev/packages/http) package (If there are any API call or internet access to make)
