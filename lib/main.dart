@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:git_tracker/view/home/home_page.dart';
 import 'package:git_tracker/view/landing/splash_page.dart';
+import 'package:git_tracker/view/profile/user_profile.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -26,6 +27,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/home',
           page: () => const HomePage(),
+        ),
+        GetPage(
+          name: '/profile',
+          page: () => const Profile(),
         )
       ],
     );
