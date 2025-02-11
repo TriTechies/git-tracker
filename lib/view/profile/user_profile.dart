@@ -26,9 +26,9 @@ class Profile extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            Row(
+          const   Row(
               children: [
-                const CircleAvatar(
+                 CircleAvatar(
                   radius: 40,
                   backgroundImage: NetworkImage(
                     'https://safeerep.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile.856bb6b3.jpg&w=3840&q=75',
