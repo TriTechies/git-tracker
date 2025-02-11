@@ -1,8 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:git_tracker/view/style/colors.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  void initState() {
+    super.initState();
+    Timer( const Duration(seconds: 5), () {
+      Get.offAllNamed('/home');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

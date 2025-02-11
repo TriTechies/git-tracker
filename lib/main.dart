@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:git_tracker/view/home/home_page.dart';
 import 'package:git_tracker/view/landing/splash_page.dart';
 
 void main() async {
@@ -22,6 +23,10 @@ class MyApp extends StatelessWidget {
           page: () => const SplashPage(),
           name: '/splash',
         ),
+        GetPage(
+          name: '/home',
+          page: () => const HomePage(),
+        )
       ],
     );
   }
