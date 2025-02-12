@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:git_tracker/view/dashboard/dashboard_screen.dart';
 import 'package:git_tracker/view/home/home_page.dart';
 import 'package:git_tracker/view/landing/intro.dart';
 import 'package:git_tracker/view/landing/splash_page.dart';
@@ -36,6 +37,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/intro',
           page: () => const Intro(),
+        ),
+        GetPage(
+          name: '/dashboard',
+          page: () => const DashboardScreen(),
         )
       ],
     );
