@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:git_tracker/view/home/home_page.dart';
+import 'package:git_tracker/view/landing/intro.dart';
 import 'package:git_tracker/view/landing/splash_page.dart';
 import 'package:git_tracker/view/profile/user_profile.dart';
 
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/profile',
           page: () => const Profile(),
+        ),
+        GetPage(
+          name: '/intro',
+          page: () => const Intro(),
         )
       ],
     );

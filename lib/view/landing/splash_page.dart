@@ -15,7 +15,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Timer( const Duration(seconds: 5), () {
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/intro');
     });
   }
 
