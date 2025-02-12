@@ -69,7 +69,8 @@ class _DashboardScreenState extends State<DashboardScreen>
       child: Container(
         height: 36, // Reduced height
         decoration: BoxDecoration(
-          color: Colors.grey[300], // Gray background for tab bar
+          color: const Color.fromARGB(
+              255, 234, 236, 240), // Gray background for tab bar
           borderRadius:
               BorderRadius.circular(16), // Slightly smaller border radius
         ),
@@ -81,6 +82,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               color: Colors.white, // White background for selected tab
               borderRadius: BorderRadius.circular(16),
             ),
+            dividerHeight: 0,
             labelColor: Colors.blue[400], // Selected tab text color
             unselectedLabelColor: Colors.grey[800], // Unselected tab text color
             indicatorSize: TabBarIndicatorSize.tab,
