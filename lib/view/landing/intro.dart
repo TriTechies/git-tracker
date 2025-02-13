@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:git_tracker/view/widgets/my_button.dart';
 import '../style/style.dart';
@@ -12,7 +13,7 @@ class Intro extends StatefulWidget {
 }
 
 class _IntroState extends State<Intro> {
-  final PageController _pageController = PageController(); 
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,6 @@ class _IntroState extends State<Intro> {
                 ],
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: SmoothPageIndicator(
@@ -44,7 +44,6 @@ class _IntroState extends State<Intro> {
                 ),
               ),
             ),
-           
             Padding(
               padding: const EdgeInsets.only(left: 20.0, bottom: 40),
               child: MyButton(
@@ -52,7 +51,9 @@ class _IntroState extends State<Intro> {
                 height: 52,
                 width: 345,
                 color: Colors.white,
-                route: () {},
+                route: () {
+                  Get.offAllNamed('/login');
+                },
                 textColor: Colors.black,
               ),
             ),
@@ -95,7 +96,6 @@ class _IntroState extends State<Intro> {
     );
   }
 
-
   Widget _buildSlide2() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +128,6 @@ class _IntroState extends State<Intro> {
     );
   }
 
-
   Widget _buildTopSection() {
     return Column(
       children: [
@@ -140,8 +139,8 @@ class _IntroState extends State<Intro> {
               children: [
                 Positioned(
                   bottom: 20,
-
-top: 20,                  left: 100,
+                  top: 20,
+                  left: 100,
                   child: const CircleAvatar(radius: 40),
                 ),
                 Image.asset('assets/chat popup.png'),
@@ -166,14 +165,14 @@ top: 20,                  left: 100,
             ),
           ],
         ),
-         Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Stack(  
+            Stack(
               clipBehavior: Clip.none,
               children: [
                 Positioned(
-                bottom: 10,
+                  bottom: 10,
                   top: 20,
                   left: 100,
                   child: const CircleAvatar(radius: 40),
