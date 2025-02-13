@@ -1,21 +1,79 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class ContributionChartWidget extends StatelessWidget {
+class ContributionChartWidget extends StatefulWidget {
   const ContributionChartWidget({super.key});
 
   @override
+  State<ContributionChartWidget> createState() =>
+      _ContributionChartWidgetState();
+}
+
+class _ContributionChartWidgetState extends State<ContributionChartWidget> {
+  @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color
+        border: Border.all(
+            color: const Color.fromARGB(255, 243, 244, 246),
+            width: 1), // Border
+        borderRadius: BorderRadius.circular(20), // Rounded corners
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Water Plants',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromARGB(
+                            255, 243, 244, 246), // Background color
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.water,
+                        ),
+                      ),
+                    ), // Icon next to title
+                    const SizedBox(width: 8),
+                    const Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Water Plants',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '0/1',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 243, 244, 246),
+                        width: 1),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.add,
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             ContributionGrid(),

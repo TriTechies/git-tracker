@@ -4,7 +4,7 @@ class StatusWidget extends StatefulWidget {
   const StatusWidget({super.key});
 
   @override
-  _StatusWidgetState createState() => _StatusWidgetState();
+  State<StatusWidget> createState() => _StatusWidgetState();
 }
 
 class _StatusWidgetState extends State<StatusWidget> {
@@ -91,22 +91,79 @@ class _StatusWidgetState extends State<StatusWidget> {
               const SizedBox(height: 10),
               if (_isExpanded) // Show the expanded content
                 const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Everything is running smoothly!'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child:
+                                _InfoTile(title: 'Success Rate', value: '95%')),
+                        Expanded(
+                            child: _InfoTile(title: 'Completed', value: '120')),
+                      ],
+                    ),
                     SizedBox(height: 10),
-                    Text('Success Rate: 95%'),
-                    Text('Completed: 120'),
-                    Text('Points Earned: 300'),
-                    Text('Best Streak Day: 10'),
-                    Text('Skipped: 5'),
-                    Text('Failed: 2'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: _InfoTile(
+                                title: 'Points Earned', value: '300')),
+                        Expanded(
+                            child: _InfoTile(
+                                title: 'Best Streak Day', value: '10')),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: _InfoTile(title: 'Skipped', value: '5')),
+                        Expanded(child: _InfoTile(title: 'Failed', value: '2')),
+                      ],
+                    ),
                   ],
                 ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _InfoTile extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const _InfoTile({
+    Key? key,
+    required this.title,
+    required this.value,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.grey, // Gray color for the title
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 18, // Larger font size for the value
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 }
