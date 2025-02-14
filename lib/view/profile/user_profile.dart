@@ -34,10 +34,10 @@ class Profile extends StatelessWidget {
                     'https://safeerep.vercel.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fprofile.856bb6b3.jpg&w=3840&q=75',
                   ),
                 ),
-                const SizedBox(width: 12),
+                 SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children:  [
                     Text(
                       'safeer ep',
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
