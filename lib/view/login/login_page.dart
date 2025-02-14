@@ -70,6 +70,7 @@ class LoginPage extends StatelessWidget {
                     if (value!.isEmpty) {
                       return 'Please enter your password';
                     }
+                    return null;
                   },
                 ),
               ),
