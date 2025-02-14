@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:git_tracker/controller/text_controller.dart';
+import 'package:git_tracker/model/user.dart';
 import 'package:git_tracker/view/style/style.dart';
 import 'package:get/get.dart';
 import 'package:git_tracker/view/widgets/my_button.dart';
 import 'package:git_tracker/view/widgets/text_fields.dart';
 
-class SignUp extends StatelessWidget {
-  const SignUp({super.key});
+import '../../db/database_helper.dart';
+
+class SignUpContinue extends StatelessWidget {
+  const SignUpContinue({super.key});
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final controller = Get.find<TextController>();
+    final serviceController = Get.find<DatabaseHelper>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -38,14 +42,14 @@ class SignUp extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20.0),
                 child: CustomTextField(
                   height: 20,
-                  hintText: "Name",
+                  hintText: "Please enter your email",
                   width: 345,
                   type: TextInputType.emailAddress,
                   obsured: false,
-                  controller: controller.name,
+                  controller: controller.signUpEmail,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your Name';
+                      return 'Please enter your email';
                     }
                     return null;
                   },
@@ -55,14 +59,14 @@ class SignUp extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20.0),
                 child: CustomTextField(
                   height: 20,
-                  hintText: "SURNAME",
+                  hintText: "Please enter your password",
                   width: 345,
                   type: TextInputType.visiblePassword,
-                  obsured: false,
-                  controller: controller.surname,
+                  obsured: true,
+                  controller: controller.signUpPassword,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your Surname';
+                      return 'Please enter your password';
                     }
                     return null;
                   },
@@ -72,19 +76,19 @@ class SignUp extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20.0),
                 child: CustomTextField(
                   height: 20,
-                  hintText: "02/02/2025",
+                  hintText: "Please enter your password again",
                   width: 345,
                   type: TextInputType.visiblePassword,
-                  obsured: false,
-                  controller: controller.dateofBirth,
+                  obsured: true,
+                  controller: controller.signUpConfroimPassword,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Date of birth is required';
+                      return 'Please enter your password again';
                     }
 
-                    final dateRegex = RegExp(r'^\d{2}/\d{2}/\d{4}$');
-                    if (!dateRegex.hasMatch(value)) {
-                      return 'Enter a valid date in DD/MM/YYYY format';
+                    if (controller.signUpPassword.text !=
+                        controller.signUpConfroimPassword.text) {
+                      return 'Please enter the same password';
                     }
 
                     return null;
@@ -102,9 +106,33 @@ class SignUp extends StatelessWidget {
           height: 52,
           width: 345,
           color: Colors.blue,
-          route: () {
+          route: () async {
             if (formKey.currentState?.validate() ?? false) {
-              Get.toNamed('/signupcontinue');
+              try {
+                final userData = {
+                  'name':
+                      '${controller.name.text} ${controller.surname.text}',
+                  'email': controller.signUpEmail.text,
+                  'password': controller.signUpPassword.text,
+                  'date_of_birth': controller.dateofBirth.text,
+                };
+
+                final userId = await serviceController.insertUser(userData);
+                print('User created with ID: $userId');
+
+                // Print the entire users table
+                await serviceController.printUsersTable();
+
+                Get.toNamed('/gender');
+              } catch (e) {
+                Get.snackbar(
+                  'Error',
+                  e.toString(),
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.red,
+                  colorText: Colors.white,
+                );
+              }
             }
           },
         ),
