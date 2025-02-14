@@ -4,6 +4,7 @@ import 'package:git_tracker/controller/text_controller.dart';
 import 'package:git_tracker/view/style/style.dart';
 import 'package:git_tracker/view/widgets/my_button.dart';
 import 'package:git_tracker/view/widgets/text_fields.dart';
+import 'package:git_tracker/db/database_helper.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -12,6 +13,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final controller = Get.find<TextController>();
+    final serviceController = Get.find<DatabaseHelper>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -113,7 +115,10 @@ class LoginPage extends StatelessWidget {
           width: 345,
           color: Colors.blue,
           route: () {
-            if (formKey.currentState?.validate() ?? false) {}
+            if (formKey.currentState?.validate() ?? false) {
+              serviceController.login(
+                  controller.emailLogin.text, controller.passwordLogin.text);
+            }
           },
         ),
       ),
