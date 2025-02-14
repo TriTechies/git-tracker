@@ -7,10 +7,12 @@ class HabitCard extends StatelessWidget {
     required this.heading,
     required this.image,
     required this.subHeading,
+    required this.icon
   });
   final String image;
   final String heading;
   final String subHeading;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,7 @@ class HabitCard extends StatelessWidget {
                     color: Colors.grey.shade300,
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.add, size: 18),
+                    icon: Icon(icon, size: 18),
                     onPressed: () {},
                   ),
                 ),

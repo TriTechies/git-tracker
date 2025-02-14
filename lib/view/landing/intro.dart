@@ -113,9 +113,9 @@ class _IntroState extends State<Intro> {
               color: Colors.white,
             ), ),
         ),
-       const  HabitCard(heading: "Drink Water", image: "habit_water", subHeading: "500/2000ML"),
-       const  HabitCard(heading: "Walk", image: "habit_walk", subHeading: "0/10000 STEPS"),
-       const  HabitCard(heading: "Meditate", image: "habit_meditate", subHeading: "30/30 MIN"),
+       const  HabitCard(heading: "Drink Water", image: "habit_water", subHeading: "500/2000ML",icon: Icons.add,),
+       const  HabitCard(heading: "Walk", image: "habit_walk", subHeading: "0/10000 STEPS",icon: Icons.add,),
+       const  HabitCard(heading: "Meditate", image: "habit_meditate", subHeading: "30/30 MIN",icon: Icons.check,),
       const  Spacer(),
         Padding(
           padding: const EdgeInsets.only(left: 20.0,),
