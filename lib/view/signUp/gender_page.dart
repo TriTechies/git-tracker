@@ -41,6 +41,7 @@ class GenderPage extends StatelessWidget {
             height: 20,
           ),
           const MyCardRow(
+        
               imageFirst: "male",
               textFirst: "Male",
               imageSecond: "female",

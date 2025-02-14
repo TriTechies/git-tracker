@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:git_tracker/controller/text_controller.dart';
 
 class MyCardRow extends StatelessWidget {
   const MyCardRow({
@@ -16,14 +18,21 @@ class MyCardRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller=Get.find<TextController>();
     return Padding(
       padding: const EdgeInsets.only(left: 30.0),
       child: Row(
         children: [
-          Card(
+         Obx(() => GestureDetector(
+          onLongPress: controller.toggleSelection,
+          child: Card(
             color: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
+              side: BorderSide(
+                color: controller.isSelected.value ? Colors.blue : Colors.transparent,
+                width: 2,
+              ),
             ),
             elevation: 2,
             child: Column(
@@ -32,16 +41,13 @@ class MyCardRow extends StatelessWidget {
                 SizedBox(
                   width: 160,
                   height: 134,
-                  child: SizedBox(
+                  child: Image.asset(
+                    'assets/$imageFirst.png',
                     height: 20,
                     width: 40,
-                    child: Image.asset(
-                      'assets/$imageFirst.png',
-                      fit: BoxFit.contain,
-                    ),
                   ),
                 ),
-                 Padding(
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     textFirst,
@@ -54,10 +60,17 @@ class MyCardRow extends StatelessWidget {
               ],
             ),
           ),
-          Card(
+        )),
+    Obx(() => GestureDetector(
+          onLongPress: controller.toggleSelection,
+          child: Card(
             color: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
+              side: BorderSide(
+                color: controller.isSelected.value ? Colors.blue : Colors.transparent,
+                width: 2,
+              ),
             ),
             elevation: 2,
             child: Column(
@@ -68,11 +81,12 @@ class MyCardRow extends StatelessWidget {
                   height: 134,
                   child: Image.asset(
                     'assets/$imageSecond.png',
-                    fit: BoxFit.contain,
+                    height: 20,
+                    width: 40,
                   ),
                 ),
-                 Padding(
-                  padding:const  EdgeInsets.all(8.0),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
                     textSecond,
                     style: const TextStyle(
@@ -84,6 +98,7 @@ class MyCardRow extends StatelessWidget {
               ],
             ),
           ),
+        ))
         ],
       ),
     );

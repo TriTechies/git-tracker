@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:git_tracker/view/widgets/habit_card.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:git_tracker/view/widgets/my_button.dart';
 import '../style/style.dart';
@@ -36,7 +37,7 @@ class _IntroState extends State<Intro> {
               child: SmoothPageIndicator(
                 controller: _pageController,
                 count: 2,
-                effect: ExpandingDotsEffect(
+                effect: const ExpandingDotsEffect(
                   dotHeight: 8,
                   dotWidth: 8,
                   activeDotColor: Colors.white,
@@ -100,10 +101,24 @@ class _IntroState extends State<Intro> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildTopSection(),
-        const SizedBox(height: 20),
+       const  SizedBox(
+          height: 50,
+
+        ),
         Padding(
-          padding: const EdgeInsets.only(left: 20.0),
+          padding: const EdgeInsets.only(left: 20.0,bottom: 5),
+          child:  Text('Habits',style:defaultstyle(
+              fontFamily: "Segoe UI",
+              size: 15,
+              color: Colors.white,
+            ), ),
+        ),
+       const  HabitCard(heading: "Drink Water", image: "habit_water", subHeading: "500/2000ML"),
+       const  HabitCard(heading: "Walk", image: "habit_walk", subHeading: "0/10000 STEPS"),
+       const  HabitCard(heading: "Meditate", image: "habit_meditate", subHeading: "30/30 MIN"),
+      const  Spacer(),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0,),
           child: Text(
             "Track Your Progress",
             style: defaultstyle(
@@ -137,7 +152,7 @@ class _IntroState extends State<Intro> {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                Positioned(
+                const Positioned(
                   bottom: 20,
                   top: 20,
                   left: 100,
@@ -154,7 +169,7 @@ class _IntroState extends State<Intro> {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                Positioned(
+                const Positioned(
                   bottom: 10,
                   top: 20,
                   left: 0,
@@ -171,7 +186,7 @@ class _IntroState extends State<Intro> {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                Positioned(
+                const Positioned(
                   bottom: 10,
                   top: 20,
                   left: 100,
