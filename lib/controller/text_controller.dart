@@ -15,6 +15,7 @@ class TextController extends GetxController {
   TextEditingController forgotPasswordNewPasswordConfirm =
       TextEditingController();
   var isSelected = false.obs;
+  final RxBool loginError = false.obs;
 
   void toggleSelection() {
     isSelected.value = !isSelected.value;

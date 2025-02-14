@@ -15,8 +15,6 @@ class ForgotPassword extends StatelessWidget {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final controller = Get.find<TextController>();
     final serviceController = Get.find<DatabaseHelper>();
-
-    // Add Rx variable for message
     final RxString message = ''.obs;
     final RxBool isError = false.obs;
 
@@ -113,6 +111,7 @@ class ForgotPassword extends StatelessWidget {
                           )
                         : const SizedBox.shrink(),
                   )),
+                  
             ],
           ),
         ),
@@ -127,21 +126,15 @@ class ForgotPassword extends StatelessWidget {
           route: () async {
             if (formKey.currentState?.validate() ?? false) {
               print('Attempting to update password...');
-
               var result = await serviceController.updatePassword(
                   controller.forgotPasswordEmail.text,
                   controller.forgotPasswordNewPassword.text);
-
               print('Update Password Result: $result');
               print('Success: ${result['success']}');
               print('Message: ${result['message']}');
-
-              // Update message and isError
               message.value = result['message'].toString();
               isError.value = !result['success'];
-
               if (result['success']) {
-                // Wait for a moment to show success message before going back
                 await Future.delayed(const Duration(seconds: 2));
                 Get.back();
               }
