@@ -107,4 +107,38 @@ class DatabaseHelper extends GetxController {
       print('Error printing users table: $e');
     }
   }
+
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    Database db = await database;
+    try {
+      List<Map<String, dynamic>> results = await db.query(
+        'users',
+        where: 'email = ? AND password = ?',
+        whereArgs: [email, password],
+      );
+
+      if (results.isNotEmpty) {
+         Get.offNamed('/gender');
+         print('Login successful');
+        return {
+          'success': true,
+          'user': results.first,
+          'message': 'Login successful'
+        };
+      } else {
+        print('Login Failed');
+        return {
+          'success': false,
+          'user': null,
+          'message': 'Invalid email or password'
+        };
+      }
+    } catch (e) {
+      return {
+        'success': false,
+        'user': null,
+        'message': 'An error occurred during login'
+      };
+    }
+  }
 }
