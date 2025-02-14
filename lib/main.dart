@@ -12,10 +12,10 @@ import 'package:git_tracker/view/signUp/habits_options.dart';
 import 'package:git_tracker/view/signUp/sign_up.dart';
 import 'package:git_tracker/view/signUp/sign_up_continue.dart';
 import 'package:git_tracker/db/database_helper.dart';
-// ... existing code ...
-// import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
-void   main() async {
+import 'view/passwordReset/password_reset.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper().database;
   runApp(const MyApp());
@@ -68,6 +68,10 @@ class MyApp extends StatelessWidget {
           GetPage(
           name: '/signupcontinue',
           page: () => const SignUpContinue(),
+        ),
+        GetPage(
+          name: '/forgotpassword',
+          page: () => const ForgotPassword(),
         )
       ],
     );

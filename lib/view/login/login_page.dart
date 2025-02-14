@@ -14,6 +14,7 @@ class LoginPage extends StatelessWidget {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final controller = Get.find<TextController>();
     final serviceController = Get.find<DatabaseHelper>();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -28,7 +29,10 @@ class LoginPage extends StatelessWidget {
         title: Text(
           "Continue with E-mail",
           style: defaultstyle(
-              fontFamily: "Segoe UI", size: 24, color: Colors.black),
+            fontFamily: "Segoe UI",
+            size: 24,
+            color: Colors.black,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -37,8 +41,9 @@ class LoginPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 20), // Added spacing
               Padding(
-                padding: const EdgeInsets.only(left: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: CustomTextField(
                   height: 20,
                   hintText: "E-mail",
@@ -59,8 +64,9 @@ class LoginPage extends StatelessWidget {
                   },
                 ),
               ),
+              const SizedBox(height: 12),
               Padding(
-                padding: const EdgeInsets.only(left: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: CustomTextField(
                   height: 20,
                   hintText: "Password",
@@ -69,19 +75,34 @@ class LoginPage extends StatelessWidget {
                   obsured: true,
                   controller: controller.passwordLogin,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return 'Please enter your password';
                     }
                     return null;
                   },
                 ),
               ),
+              Obx(() => controller.loginError.value
+                  ? const Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 8.0, left: 20.0),
+                        child: Text(
+                          'Invalid email or password',
+                          style: TextStyle(color: Colors.red, fontSize: 12),
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink()),
+              const SizedBox(height: 12),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed('/forgotpassword');
+                    },
                     child: Text(
                       "I forgot my password",
                       style: fontWeightStyle(
@@ -94,13 +115,14 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 8),
               Align(
                 alignment: Alignment.center,
                 child: TextButton(
                   onPressed: () {
                     Get.toNamed('/signup');
                   },
-                  child: const Text("Don’t have an account? Let’s create!"),
+                  child: const Text("Don't have an account? Let's create!"),
                 ),
               ),
             ],
@@ -114,10 +136,16 @@ class LoginPage extends StatelessWidget {
           height: 52,
           width: 345,
           color: Colors.blue,
-          route: () {
+          route: () async {
+            controller.loginError.value = false;
             if (formKey.currentState?.validate() ?? false) {
-              serviceController.login(
+              var result = await serviceController.login(
                   controller.emailLogin.text, controller.passwordLogin.text);
+              if (!result['success']) {
+                controller.loginError.value = true;
+                formKey.currentState
+                    ?.validate(); 
+              }
             }
           },
         ),

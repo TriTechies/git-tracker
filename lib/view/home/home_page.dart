@@ -9,13 +9,13 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 100,),
+        const   SizedBox(height: 100,),
           Center(
             child: IconButton(
                 onPressed: () {
-                  Get.to(Profile());
+                  Get.to(const Profile());
                 },
-                icon: Icon(Icons.abc)),
+                icon: const Icon(Icons.abc)),
           )
         ],  
       ),

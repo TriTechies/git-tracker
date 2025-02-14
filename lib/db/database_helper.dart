@@ -118,8 +118,8 @@ class DatabaseHelper extends GetxController {
       );
 
       if (results.isNotEmpty) {
-         Get.offNamed('/gender');
-         print('Login successful');
+        Get.offNamed('/gender');
+        print('Login successful');
         return {
           'success': true,
           'user': results.first,
@@ -138,6 +138,29 @@ class DatabaseHelper extends GetxController {
         'success': false,
         'user': null,
         'message': 'An error occurred during login'
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> updatePassword(
+      String email, String newpasswod) async {
+    Database db = await database;
+    try {
+      var user = await getUserByEmail(email);
+      if (user == null) {
+        return {'success': false, 'message': 'User not found'};
+      }
+      int updateRows = await db.update('users', {'password': newpasswod},
+          where: 'email = ? ', whereArgs: [email]);
+      if (updateRows > 0) {
+        return {'success': true, 'message': 'Password Updated successfully'};
+      } else {
+        return {'success': false, 'message': 'Failed to update password'};
+      }
+    } catch (e) {
+      return {
+        'success':false,
+        'message':'An error occured pleas try agian'
       };
     }
   }
