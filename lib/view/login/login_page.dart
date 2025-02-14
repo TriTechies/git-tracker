@@ -10,6 +10,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final controller = Get.find<TextController>();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -17,7 +18,9 @@ class LoginPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
         title: Text(
@@ -27,57 +30,78 @@ class LoginPage extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: CustomTextField(
-                height: 20,
-                hintText: "E-mail",
-                width: 345,
-                type: TextInputType.emailAddress,
-                obsured: false,
-                controller: controller.emailLogin,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: CustomTextField(
-                height: 20,
-                hintText: "Password",
-                width: 345,
-                type: TextInputType.visiblePassword,
-                obsured: true,
-                controller: controller.passwordLogin,
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
                 padding: const EdgeInsets.only(left: 10.0),
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "I forgot my password",
-                    style: fontWeightStyle(
-                      fontFamily: "Segoe UI",
-                      size: 14,
-                      color: Colors.grey,
-                      weight: FontWeight.w400,
+                child: CustomTextField(
+                  height: 20,
+                  hintText: "E-mail",
+                  width: 345,
+                  type: TextInputType.emailAddress,
+                  obsured: false,
+                  controller: controller.emailLogin,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!RegExp(
+                            r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+                        .hasMatch(value)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: CustomTextField(
+                  height: 20,
+                  hintText: "Password",
+                  width: 345,
+                  type: TextInputType.visiblePassword,
+                  obsured: true,
+                  controller: controller.passwordLogin,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "I forgot my password",
+                      style: fontWeightStyle(
+                        fontFamily: "Segoe UI",
+                        size: 14,
+                        color: Colors.grey,
+                        weight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: TextButton(
-                onPressed: () {},
-                child: const Text("Don’t have an account? Let’s create!"),
+              Align(
+                alignment: Alignment.center,
+                child: TextButton(
+                  onPressed: () {
+                    Get.toNamed('/signup');
+                  },
+                  child: const Text("Don’t have an account? Let’s create!"),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Padding(
@@ -88,7 +112,7 @@ class LoginPage extends StatelessWidget {
           width: 345,
           color: Colors.blue,
           route: () {
-            Get.toNamed('/signup');
+            if (formKey.currentState?.validate() ?? false) {}
           },
         ),
       ),

@@ -7,4 +7,9 @@ class TextController extends GetxController {
     TextEditingController name = TextEditingController();
       TextEditingController surname = TextEditingController();
         TextEditingController dateofBirth = TextEditingController();
+          var isSelected = false.obs;
+
+  void toggleSelection() {
+    isSelected.value = !isSelected.value;
+  }
 }
