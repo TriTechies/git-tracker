@@ -86,7 +86,7 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
 
 class ContributionGrid extends StatelessWidget {
   final int rows = 5;
-  final int columns = 22;
+  final int columns = 20;
   final Random random = Random();
 
   ContributionGrid({super.key});

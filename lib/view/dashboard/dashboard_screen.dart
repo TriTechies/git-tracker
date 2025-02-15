@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:git_tracker/view/dashboard/widgets/contribution_chart_widget.dart';
 import 'package:git_tracker/view/dashboard/widgets/habit_graph.dart';
 import 'package:git_tracker/view/dashboard/widgets/status_widget.dart';
+import 'package:git_tracker/view/add_activity/add_activity_screen.dart';
+import 'package:git_tracker/view/profile/profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -22,6 +24,22 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   void _onItemTapped(int index) {
+    if (index == 1) {
+      // Navigate to Add Activity Screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AddActivityScreen()),
+      );
+      return;
+    } else if (index == 2) {
+      // Navigate to Profile Screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfileScreen()),
+      );
+      return;
+    }
+
     setState(() {
       _selectedIndex = index;
     });
