@@ -7,6 +7,7 @@ import 'package:git_tracker/view/landing/intro.dart';
 import 'package:git_tracker/view/landing/splash_page.dart';
 import 'package:git_tracker/view/login/login_page.dart';
 import 'package:git_tracker/view/profile/user_profile.dart';
+import 'package:git_tracker/view/settings/settings.dart';
 import 'package:git_tracker/view/signUp/gender_page.dart';
 import 'package:git_tracker/view/signUp/habits_options.dart';
 import 'package:git_tracker/view/signUp/sign_up.dart';
@@ -43,6 +44,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/profile',
           page: () => const Profile(),
+        ),
+        GetPage(
+          name: '/settings',
+          page: () => const Settings(),
         ),
         GetPage(
           name: '/intro',
