@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:git_tracker/view/widgets/chevron_button.dart';
+
 class ContributionChartWidget extends StatefulWidget {
   const ContributionChartWidget({super.key});
 
@@ -59,20 +61,11 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
                     ),
                   ],
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        color: const Color.fromARGB(255, 243, 244, 246),
-                        width: 1),
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.add,
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
+                ChevronButton(
+                  onPressed: () {},
+                  direction: "left",
+                  icon: Icons.add,
+                )
               ],
             ),
             const SizedBox(height: 10),

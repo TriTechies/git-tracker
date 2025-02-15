@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:git_tracker/view/widgets/chevron_button.dart';
 
 class StatusWidget extends StatefulWidget {
   const StatusWidget({super.key});
@@ -63,28 +64,13 @@ class _StatusWidgetState extends State<StatusWidget> {
                       ),
                     ],
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 243, 244, 246),
-                          width: 1),
-                    ),
-                    child: IconButton(
-                      icon: Transform.rotate(
-                        angle: _isExpanded
-                            ? -3.14159 / 2
-                            : 3.14159 / 2, // Rotate 90 degrees when collapsed
-                        child: const Icon(
-                          Icons.chevron_right,
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isExpanded = !_isExpanded; // Toggle accordion state
-                        });
-                      },
-                    ),
+                  ChevronButton(
+                    onPressed: () {
+                      setState(() {
+                        _isExpanded = !_isExpanded; // Toggle accordion state
+                      });
+                    },
+                    direction: _isExpanded ? "up" : "down",
                   ),
                 ],
               ),

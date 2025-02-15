@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:git_tracker/view/dashboard/widgets/contribution_chart_widget.dart';
 import 'package:git_tracker/view/dashboard/widgets/habit_graph.dart';
 import 'package:git_tracker/view/dashboard/widgets/status_widget.dart';
-import 'package:git_tracker/view/add_activity/add_activity_screen.dart';
+import 'package:git_tracker/view/add_habit/add_habit_screen.dart';
 import 'package:git_tracker/view/profile/profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -25,10 +25,10 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   void _onItemTapped(int index) {
     if (index == 1) {
-      // Navigate to Add Activity Screen
+      // Navigate to Add Habit Screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AddActivityScreen()),
+        MaterialPageRoute(builder: (context) => const AddHabitScreen()),
       );
       return;
     } else if (index == 2) {
@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Activity',
+          'Habit',
           style: TextStyle(fontWeight: FontWeight.w800),
         ),
         backgroundColor: Colors.white,

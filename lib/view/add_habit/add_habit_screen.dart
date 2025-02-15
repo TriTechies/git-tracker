@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:git_tracker/view/widgets/chevron_button.dart';
 
-class AddActivityScreen extends StatelessWidget {
-  const AddActivityScreen({super.key});
+class AddHabitScreen extends StatelessWidget {
+  const AddHabitScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Activity'),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 4.0),
+          child: ChevronButton(
+            onPressed: () => Navigator.of(context).pop(),
+            direction: 'left',
+          ),
+        ),
+        title: const Text('Add Habit'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -15,13 +23,13 @@ class AddActivityScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Add New Activity',
+              'Add New Habit',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Activity Name',
+                labelText: 'Habit Name',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -47,12 +55,12 @@ class AddActivityScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Implement activity creation
+                  // TODO: Implement Habit creation
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
-                    'Create Activity',
+                    'Create Habit',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
