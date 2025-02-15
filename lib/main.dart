@@ -12,7 +12,6 @@ import 'package:git_tracker/view/signUp/habits_options.dart';
 import 'package:git_tracker/view/signUp/sign_up.dart';
 import 'package:git_tracker/view/signUp/sign_up_continue.dart';
 import 'package:git_tracker/db/database_helper.dart';
-
 import 'view/passwordReset/password_reset.dart';
 
 void main() async {

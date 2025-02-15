@@ -14,10 +14,22 @@ class TextController extends GetxController {
   TextEditingController forgotPasswordNewPassword = TextEditingController();
   TextEditingController forgotPasswordNewPasswordConfirm =
       TextEditingController();
-  var isSelected = false.obs;
+  final selectedCards = [
+    false.obs,
+    false.obs
+  ]; 
+  final isInSelectionMode = false.obs;
   final RxBool loginError = false.obs;
 
-  void toggleSelection() {
-    isSelected.value = !isSelected.value;
+  void toggleSelection(int index) {
+    if (!isInSelectionMode.value) {
+      isInSelectionMode.value = true;
+    }
+    selectedCards[index].value = !selectedCards[index].value;
+
+    
+    if (!selectedCards.any((card) => card.value)) {
+      isInSelectionMode.value = false;
+    }
   }
 }

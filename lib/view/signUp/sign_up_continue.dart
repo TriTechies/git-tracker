@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:git_tracker/view/widgets/my_button.dart';
 import 'package:git_tracker/view/widgets/text_fields.dart';
 
-import '../../db/database_helper.dart';
-
 class SignUpContinue extends StatelessWidget {
   const SignUpContinue({super.key});
 
@@ -14,7 +12,6 @@ class SignUpContinue extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final controller = Get.find<TextController>();
-    final serviceController = Get.find<DatabaseHelper>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -107,31 +104,7 @@ class SignUpContinue extends StatelessWidget {
           color: Colors.blue,
           route: () async {
             if (formKey.currentState?.validate() ?? false) {
-              try {
-                final userData = {
-                  'name':
-                      '${controller.name.text} ${controller.surname.text}',
-                  'email': controller.signUpEmail.text,
-                  'password': controller.signUpPassword.text,
-                  'date_of_birth': controller.dateofBirth.text,
-                };
-
-                final userId = await serviceController.insertUser(userData);
-                print('User created with ID: $userId');
-
-                // Print the entire users table
-                await serviceController.printUsersTable();
-
-                Get.toNamed('/gender');
-              } catch (e) {
-                Get.snackbar(
-                  'Error',
-                  e.toString(),
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: Colors.red,
-                  colorText: Colors.white,
-                );
-              }
+              Get.toNamed('/gender');
             }
           },
         ),
