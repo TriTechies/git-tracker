@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:git_tracker/controller/text_controller.dart';
+import 'package:git_tracker/db/database_helper.dart';
 import 'package:git_tracker/view/widgets/my_card_row.dart';
 
 import '../style/style.dart';
@@ -10,6 +12,8 @@ class GenderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<TextController>();
+    final serviceController = Get.find<DatabaseHelper>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -41,7 +45,6 @@ class GenderPage extends StatelessWidget {
             height: 20,
           ),
           const MyCardRow(
-        
               imageFirst: "male",
               textFirst: "Male",
               imageSecond: "female",
@@ -55,8 +58,33 @@ class GenderPage extends StatelessWidget {
           height: 52,
           width: 345,
           color: Colors.blue,
-          route: () {
+          route: () async {
             Get.toNamed('/options');
+            try {
+              final userData = {
+                'name': '${controller.name.text} ${controller.surname.text}',
+                'email': controller.signUpEmail.text,
+                'password': controller.signUpPassword.text,
+                'date_of_birth': controller.dateofBirth.text,
+                'gender': controller.selectedCards[0].value ? 'Male' : 'Female',
+              };
+
+              final userId = await serviceController.insertUser(userData);
+              print('User created with ID: $userId');
+
+           
+              await serviceController.printUsersTable();
+
+              Get.toNamed('/options');
+            } catch (e) {
+              Get.snackbar(
+                'Error',
+                e.toString(),
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Colors.red,
+                colorText: Colors.white,
+              );
+            }
           },
         ),
       ),
