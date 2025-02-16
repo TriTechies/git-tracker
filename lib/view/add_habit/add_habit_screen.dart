@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:git_tracker/view/widgets/chevron_button.dart';
+import 'package:git_tracker/view/widgets/my_button.dart';
 
 class AddHabitScreen extends StatelessWidget {
   const AddHabitScreen({super.key});
@@ -50,22 +51,134 @@ class AddHabitScreen extends StatelessWidget {
               ),
               keyboardType: TextInputType.number,
             ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // TODO: Implement Habit creation
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Create Habit',
-                    style: TextStyle(fontSize: 16),
-                  ),
+            const SizedBox(height: 16),
+            // Icon Selector
+            InkWell(
+              onTap: () {
+                // TODO: Implement icon selection dialog
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.fitness_center), // Default icon
+                    SizedBox(width: 8),
+                    Text('Select Icon'),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios, size: 16),
+                  ],
                 ),
               ),
             ),
+            const SizedBox(height: 16),
+            // Color Selector
+            InkWell(
+              onTap: () {
+                // TODO: Implement color picker dialog
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 12,
+                      backgroundColor: Colors.blue, // Default color
+                    ),
+                    SizedBox(width: 8),
+                    Text('Select Color'),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios, size: 16),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Habit Type
+            DropdownButtonFormField<String>(
+              decoration: const InputDecoration(
+                labelText: 'Habit Type',
+                border: OutlineInputBorder(),
+              ),
+              items: const [
+                DropdownMenuItem(value: 'build', child: Text('Build')),
+                DropdownMenuItem(value: 'quit', child: Text('Quit')),
+              ],
+              onChanged: (value) {
+                // TODO: Handle habit type selection
+              },
+            ),
+            const SizedBox(height: 16),
+            // Goal Frequency
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Frequency',
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 3,
+                  child: DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      labelText: 'Interval',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: const [
+                      DropdownMenuItem(value: 'daily', child: Text('Per Day')),
+                      DropdownMenuItem(
+                          value: 'weekly', child: Text('Per Week')),
+                      DropdownMenuItem(
+                          value: 'monthly', child: Text('Per Month')),
+                    ],
+                    onChanged: (value) {
+                      // TODO: Handle interval selection
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Reminder Setting
+            InkWell(
+              onTap: () {
+                // TODO: Implement reminder setup dialog
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.notifications),
+                    SizedBox(width: 8),
+                    Text('Set Reminders'),
+                    Spacer(),
+                    Icon(Icons.arrow_forward_ios, size: 16),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            MyButton(
+              name: "Create Habit",
+              onPressed: () {},
+            )
           ],
         ),
       ),

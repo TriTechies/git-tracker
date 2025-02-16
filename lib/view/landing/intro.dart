@@ -49,10 +49,8 @@ class _IntroState extends State<Intro> {
               padding: const EdgeInsets.only(left: 20.0, bottom: 40),
               child: MyButton(
                 name: "Continue With E-mail",
-                height: 52,
-                width: 345,
                 color: Colors.white,
-                route: () {
+                onPressed: () {
                   Get.offAllNamed('/login');
                 },
                 textColor: Colors.black,
@@ -62,10 +60,8 @@ class _IntroState extends State<Intro> {
               padding: const EdgeInsets.only(left: 20.0, bottom: 40),
               child: MyButton(
                 name: "Skip to dashboard",
-                height: 52,
-                width: 345,
                 color: Colors.white,
-                route: () {
+                onPressed: () {
                   Get.offAllNamed('/dashboard');
                 },
                 textColor: Colors.black,

@@ -76,10 +76,7 @@ class HabitsOptions extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: MyButton(
           name: "Next",
-          height: 52,
-          width: 345,
-          color: Colors.blue,
-          route: () {
+          onPressed: () {
             Get.toNamed('/options');
           },
         ),

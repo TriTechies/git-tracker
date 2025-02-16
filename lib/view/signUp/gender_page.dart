@@ -55,10 +55,7 @@ class GenderPage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: MyButton(
           name: "Next",
-          height: 52,
-          width: 345,
-          color: Colors.blue,
-          route: () async {
+          onPressed: () async {
             Get.toNamed('/options');
             try {
               final userData = {
@@ -72,7 +69,6 @@ class GenderPage extends StatelessWidget {
               final userId = await serviceController.insertUser(userData);
               print('User created with ID: $userId');
 
-           
               await serviceController.printUsersTable();
 
               Get.toNamed('/options');
