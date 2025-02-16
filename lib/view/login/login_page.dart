@@ -133,18 +133,15 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: MyButton(
           name: "Next",
-          height: 52,
-          width: 345,
           color: Colors.blue,
-          route: () async {
+          onPressed: () async {
             controller.loginError.value = false;
             if (formKey.currentState?.validate() ?? false) {
               var result = await serviceController.login(
                   controller.emailLogin.text, controller.passwordLogin.text);
               if (!result['success']) {
                 controller.loginError.value = true;
-                formKey.currentState
-                    ?.validate(); 
+                formKey.currentState?.validate();
               }
             }
           },

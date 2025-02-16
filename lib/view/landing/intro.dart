@@ -49,11 +49,20 @@ class _IntroState extends State<Intro> {
               padding: const EdgeInsets.only(left: 20.0, bottom: 40),
               child: MyButton(
                 name: "Continue With E-mail",
-                height: 52,
-                width: 345,
                 color: Colors.white,
-                route: () {
+                onPressed: () {
                   Get.offAllNamed('/login');
+                },
+                textColor: Colors.black,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, bottom: 40),
+              child: MyButton(
+                name: "Skip to dashboard",
+                color: Colors.white,
+                onPressed: () {
+                  Get.offAllNamed('/dashboard');
                 },
                 textColor: Colors.black,
               ),
@@ -101,24 +110,43 @@ class _IntroState extends State<Intro> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       const  SizedBox(
+        const SizedBox(
           height: 50,
-
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 20.0,bottom: 5),
-          child:  Text('Habits',style:defaultstyle(
+          padding: const EdgeInsets.only(left: 20.0, bottom: 5),
+          child: Text(
+            'Habits',
+            style: defaultstyle(
               fontFamily: "Segoe UI",
               size: 15,
               color: Colors.white,
-            ), ),
+            ),
+          ),
         ),
-       const  HabitCard(heading: "Drink Water", image: "habit_water", subHeading: "500/2000ML",icon: Icons.add,),
-       const  HabitCard(heading: "Walk", image: "habit_walk", subHeading: "0/10000 STEPS",icon: Icons.add,),
-       const  HabitCard(heading: "Meditate", image: "habit_meditate", subHeading: "30/30 MIN",icon: Icons.check,),
-      const  Spacer(),
+        const HabitCard(
+          heading: "Drink Water",
+          image: "habit_water",
+          subHeading: "500/2000ML",
+          icon: Icons.add,
+        ),
+        const HabitCard(
+          heading: "Walk",
+          image: "habit_walk",
+          subHeading: "0/10000 STEPS",
+          icon: Icons.add,
+        ),
+        const HabitCard(
+          heading: "Meditate",
+          image: "habit_meditate",
+          subHeading: "30/30 MIN",
+          icon: Icons.check,
+        ),
+        const Spacer(),
         Padding(
-          padding: const EdgeInsets.only(left: 20.0,),
+          padding: const EdgeInsets.only(
+            left: 20.0,
+          ),
           child: Text(
             "Track Your Progress",
             style: defaultstyle(
@@ -156,7 +184,7 @@ class _IntroState extends State<Intro> {
                   bottom: 20,
                   top: 20,
                   left: 100,
-                  child:  CircleAvatar(radius: 40),
+                  child: CircleAvatar(radius: 40),
                 ),
                 Image.asset('assets/chat popup.png'),
               ],
@@ -173,7 +201,7 @@ class _IntroState extends State<Intro> {
                   bottom: 10,
                   top: 20,
                   left: 0,
-                  child:  CircleAvatar(radius: 40),
+                  child: CircleAvatar(radius: 40),
                 ),
                 Image.asset('assets/chat popup.png'),
               ],
@@ -190,7 +218,7 @@ class _IntroState extends State<Intro> {
                   bottom: 10,
                   top: 20,
                   left: 100,
-                  child:  CircleAvatar(radius: 40),
+                  child: CircleAvatar(radius: 40),
                 ),
                 Image.asset('assets/chat popup.png'),
               ],

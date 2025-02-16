@@ -99,10 +99,7 @@ class SignUp extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: MyButton(
           name: "Next",
-          height: 52,
-          width: 345,
-          color: Colors.blue,
-          route: () {
+          onPressed: () {
             if (formKey.currentState?.validate() ?? false) {
               Get.toNamed('/signupcontinue');
             }
