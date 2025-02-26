@@ -41,7 +41,7 @@ class Habit {
       'type': type,
       'frequency': frequency,
       'interval': interval,
-      'hasReminder': hasReminder,
+      'hasReminder': hasReminder ? 1 : 0,
       'createdAt': createdAt.toIso8601String(),
       'lastCompleted': lastCompleted?.toIso8601String(),
     };
@@ -59,7 +59,7 @@ class Habit {
       type: map['type'],
       frequency: map['frequency'],
       interval: map['interval'],
-      hasReminder: map['hasReminder'],
+      hasReminder: map['hasReminder'] == 1,
       createdAt: DateTime.parse(map['createdAt']),
       lastCompleted: map['lastCompleted'] != null
           ? DateTime.parse(map['lastCompleted'])

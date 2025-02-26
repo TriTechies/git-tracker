@@ -1,8 +1,11 @@
+import 'package:git_tracker/model/habit.dart';
 import 'package:git_tracker/util/available_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:git_tracker/view/widgets/chevron_button.dart';
 import 'package:git_tracker/view/widgets/my_button.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:get/get.dart';
+import 'package:git_tracker/controller/habit_controller.dart';
 
 class AddHabitScreen extends StatefulWidget {
   const AddHabitScreen({super.key});
@@ -12,9 +15,27 @@ class AddHabitScreen extends StatefulWidget {
 }
 
 class _AddHabitScreenState extends State<AddHabitScreen> {
+  final habitController = Get.find<HabitController>();
   IconData selectedIcon = Icons.fitness_center;
   Color selectedColor = Colors.blue;
   String iconSearchQuery = '';
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _durationController = TextEditingController();
+  final TextEditingController _frequencyController = TextEditingController();
+
+  String _habitType = 'build';
+  String _interval = 'daily';
+  bool _remindersEnabled = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _durationController.dispose();
+    _frequencyController.dispose();
+    super.dispose();
+  }
 
   void _showIconPicker() {
     showDialog(
@@ -121,6 +142,48 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     );
   }
 
+  Future<void> _createHabit() async {
+    if (_nameController.text.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Please enter a habit name',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    final habit = Habit(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        name: _nameController.text,
+        description: _descriptionController.text,
+        durationMinutes: int.tryParse(_durationController.text) ?? 0,
+        icon: IconData(selectedIcon.codePoint),
+        color: Color(selectedColor.value),
+        type: _habitType,
+        frequency: int.tryParse(_frequencyController.text) ?? 0,
+        interval: _interval,
+        hasReminder: _remindersEnabled,
+        createdAt: DateTime.now(),
+        lastCompleted: null);
+
+    try {
+      await habitController.addHabit(habit);
+
+      Get.snackbar(
+        'Success',
+        'Habit created successfully!',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      Get.back(); // Navigate back
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Error creating habit: $e',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,6 +211,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    controller: _nameController,
                     decoration: const InputDecoration(
                       labelText: 'Habit Name',
                       border: OutlineInputBorder(),
@@ -155,6 +219,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    controller: _descriptionController,
                     decoration: const InputDecoration(
                       labelText: 'Description',
                       border: OutlineInputBorder(),
@@ -163,6 +228,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    controller: _durationController,
                     decoration: const InputDecoration(
                       labelText: 'Duration (minutes)',
                       border: OutlineInputBorder(),
@@ -218,6 +284,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   const SizedBox(height: 16),
                   // Habit Type
                   DropdownButtonFormField<String>(
+                    value: _habitType,
                     decoration: const InputDecoration(
                       labelText: 'Habit Type',
                       border: OutlineInputBorder(),
@@ -227,7 +294,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       DropdownMenuItem(value: 'quit', child: Text('Quit')),
                     ],
                     onChanged: (value) {
-                      // TODO: Handle habit type selection
+                      setState(() {
+                        _habitType = value!;
+                      });
                     },
                   ),
                   const SizedBox(height: 16),
@@ -237,6 +306,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       Expanded(
                         flex: 2,
                         child: TextFormField(
+                          controller: _frequencyController,
                           decoration: const InputDecoration(
                             labelText: 'Frequency',
                             border: OutlineInputBorder(),
@@ -248,6 +318,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       Expanded(
                         flex: 3,
                         child: DropdownButtonFormField<String>(
+                          value: _interval,
                           decoration: const InputDecoration(
                             labelText: 'Interval',
                             border: OutlineInputBorder(),
@@ -261,7 +332,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                                 value: 'monthly', child: Text('Per Month')),
                           ],
                           onChanged: (value) {
-                            // TODO: Handle interval selection
+                            setState(() {
+                              _interval = value!;
+                            });
                           },
                         ),
                       ),
@@ -282,8 +355,11 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         const Text('Reminders'),
                         const Spacer(),
                         Switch(
-                          value: false, // TODO: Connect to state management
+                          value: _remindersEnabled,
                           onChanged: (bool value) {
+                            setState(() {
+                              _remindersEnabled = value;
+                            });
                             if (value) {
                               // TODO: Implement reminder setup dialog
                             }
@@ -304,7 +380,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
             bottom: 16,
             child: MyButton(
               name: "Create Habit",
-              onPressed: () {},
+              onPressed: _createHabit,
             ),
           ),
         ],

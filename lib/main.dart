@@ -14,14 +14,16 @@ import 'package:git_tracker/view/signUp/sign_up.dart';
 import 'package:git_tracker/view/signUp/sign_up_continue.dart';
 import 'package:git_tracker/db/database_helper.dart';
 import 'view/passwordReset/password_reset.dart';
+import 'package:git_tracker/controller/habit_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper().database;
-  runApp(const MyApp());
   Get.put(TextController());
   Get.put(DatabaseHelper());
+  Get.put(HabitController());
   await GetStorage.init();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -30,15 +30,15 @@ class HabitDbHelper {
       CREATE TABLE habits(
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
-        description TEXT NOT NULL,
-        durationMinutes INTEGER NOT NULL,
-        icon INTEGER NOT NULL,
-        color INTEGER NOT NULL,
-        type TEXT NOT NULL,
-        frequency INTEGER NOT NULL,
-        interval TEXT NOT NULL,
-        hasReminder INTEGER,
-        createdAt TEXT NOT NULL,
+        description TEXT,
+        durationMinutes INTEGER,
+        icon INTEGER,
+        color INTEGER,
+        type TEXT,
+        frequency INTEGER,
+        interval TEXT,
+        hasReminder BOOLEAN,
+        createdAt TEXT,
         lastCompleted TEXT
       )
     ''');
@@ -97,6 +97,12 @@ class HabitDbHelper {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  // Delete all habits
+  Future<void> deleteAllHabits() async {
+    final db = await database;
+    await db.delete('habits');
   }
 
   // Close database
