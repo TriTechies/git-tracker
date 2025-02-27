@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-
 import 'package:git_tracker/view/widgets/chevron_button.dart';
+import 'package:git_tracker/model/habit.dart';
 
 class ContributionChartWidget extends StatefulWidget {
-  const ContributionChartWidget({super.key});
+  final Habit habit;
+  const ContributionChartWidget({super.key, required this.habit});
 
   @override
   State<ContributionChartWidget> createState() =>
@@ -38,24 +39,24 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
                         color: const Color.fromARGB(
                             255, 243, 244, 246), // Background color
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Icon(
-                          Icons.water,
+                          widget.habit.icon,
                         ),
                       ),
                     ), // Icon next to title
                     const SizedBox(width: 8),
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Water Plants',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          widget.habit.name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '0/1',
+                          '0/${widget.habit.frequency}',
                         ),
                       ],
                     ),
