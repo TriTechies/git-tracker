@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:git_tracker/controller/text_controller.dart';
+import 'package:git_tracker/controller/theme_controller.dart';
 import 'package:git_tracker/view/dashboard/dashboard_screen.dart';
 import 'package:git_tracker/view/home/home_page.dart';
 import 'package:git_tracker/view/landing/intro.dart';
@@ -20,10 +21,15 @@ import 'package:git_tracker/controller/habit_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper().database;
+  await GetStorage.init();
+  
+  // initialize controllers
   Get.put(TextController());
   Get.put(DatabaseHelper());
   Get.put(HabitController());
-  await GetStorage.init();
+  
+  // add the theme controller
+  Get.put(ThemeController()); 
   runApp(const MyApp());
 }
 
@@ -32,8 +38,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    // Get theme controller to observe changes
+    final themeController = Get.find<ThemeController>();
+    
+    return Obx(() => GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      // Apply theme configuration
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        cardColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.black87,
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+        ),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.grey[900],
+        cardColor: Colors.grey[850],
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey[850],
+          elevation: 0,
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white70,
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.grey[850],
+        ),
+      ),
+      themeMode: themeController.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       initialRoute: '/splash',
       getPages: [
         GetPage(
@@ -85,6 +128,6 @@ class MyApp extends StatelessWidget {
           page: () => const DashboardScreen(),
         )
       ],
-    );
+    ));
   }
 }

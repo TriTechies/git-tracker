@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:git_tracker/view/profile/user_profile.dart';
+import 'package:git_tracker/controller/theme_controller.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -10,87 +11,129 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  
+  final ThemeController _themeController = Get.find<ThemeController>();
+  late Map<String, bool> _toggleStates;
+
+  @override
+  void initState() {
+    super.initState();
+    _toggleStates = {
+      'Dark Mode': _themeController.isDarkMode,
+      'Sounds': true,
+      'Vacation Mode': false,
+    };
+  }
+
   Widget _buildActivitySection(String sectionHead) {
-  final List<(String, IconData)> items = sectionHead == 'GENERAL'
-      ? [
-          ('General', Icons.settings),
-          ('Dark Mode', Icons.dark_mode),
-          ('Security', Icons.security),
-          ('Notifications', Icons.notifications),
-          ('Sounds', Icons.volume_up),
-          ('Vacation Mode', Icons.beach_access),
-        ]
-      : [
-          ('Rate Us', Icons.star),
-          ('Share', Icons.share),
-          ('About Us', Icons.info), 
-          ('Support', Icons.help), 
-        ];
+    final List<(String, IconData, bool)> items = sectionHead == 'GENERAL'
+        // the third value is used to show the toggle button or not;
+        ? [
+            ('General', Icons.settings, false),
+            ('Dark Mode', Icons.dark_mode, true),
+            ('Security', Icons.security, false),
+            ('Notifications', Icons.notifications, false),
+            ('Sounds', Icons.volume_up, true),
+            ('Vacation Mode', Icons.beach_access, true),
+          ]
+        : [
+            ('Rate Us', Icons.star, false),
+            ('Share', Icons.share, false),
+            ('About Us', Icons.info, false),
+            ('Support', Icons.help, false),
+          ];
 
-  return Container(
-    color: Colors.grey[100], // Background color of the section
-    padding: const EdgeInsets.all(24), // Padding for the whole section
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8), // Space below the title
-          child: Text(
-            sectionHead, // Use the passed section title
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white, // Card-like background
-            borderRadius: BorderRadius.circular(12), // Rounded corners
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 6,
-                spreadRadius: 2,
-                offset: const Offset(0, 3),
+    return Container(
+      color: Theme.of(context).brightness == Brightness.dark 
+          ? Colors.grey[850] 
+          : Colors.grey[100],
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              sectionHead, 
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.grey[400] 
+                    : Colors.grey,
               ),
-            ],
-          ),
-          child: ListView.separated(
-            shrinkWrap: true, // Prevent unbounded height issues
-            physics: const NeverScrollableScrollPhysics(), // Prevents internal scrolling
-            itemCount: items.length,
-            separatorBuilder: (context, index) => const Divider(
-              height: 1,
-              indent: 16,
-              endIndent: 16,
             ),
-            itemBuilder: (context, index) {
-              return SizedBox(
-                height: 80,
-                child: _buildSettingsItem(
-                  items[index].$1,
-                  items[index].$2,
-                ),
-              );
-            },
           ),
-        ),
-      ],
-    ),
-  );
-}
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 6,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: items.length,
+              separatorBuilder: (context, index) => Divider(
+                height: 1,
+                indent: 16,
+                endIndent: 16,
+                color: Theme.of(context).dividerColor,
+              ),
+              itemBuilder: (context, index) {
+                final item = items[index];
+                final String title = item.$1;
+                final IconData icon = item.$2;
+                final bool showToggle = item.$3;
 
+                return SizedBox(
+                  height: 80,
+                  child: _buildSettingsItem(
+                    title,
+                    icon,
+                    showToggle: showToggle,
+                    switchValue: _toggleStates[title] ?? false,
+                    onSwitchChanged: (value) {
+                      setState(() {
+                        _toggleStates[title] = value;
+                        
+                        // Handle dark mode toggle specifically
+                        if (title == 'Dark Mode') {
+                          _themeController.toggleTheme(value);
+                        }
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-  Widget _buildSettingsItem(String title, IconData icon) {
+  Widget _buildSettingsItem(
+    String title,
+    IconData icon, {
+    bool showToggle = false,
+    bool switchValue = false,
+    ValueChanged<bool>? onSwitchChanged,
+  }) {
     return Material(
-      color: Colors.white,
+      color: Theme.of(context).cardColor,
       child: InkWell(
-        onTap: () {
-          // Handle tap
-        },
+        onTap: showToggle
+            ? null
+            : () {
+                print('$title tapped');
+              },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
@@ -98,23 +141,31 @@ class _SettingsState extends State<Settings> {
               Icon(
                 icon,
                 size: 24,
-                color: Colors.black,
+                color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black87,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ),
-              const Icon(
-                Icons.chevron_right,
-                size: 24,
-                color: Colors.black54,
-              ),
+              if (showToggle)
+                Switch(
+                  value: switchValue,
+                  onChanged: onSwitchChanged,
+                  activeTrackColor: Colors.green,
+                  activeColor: Colors.white,
+                )
+              else
+                Icon(
+                  Icons.chevron_right,
+                  size: 24,
+                  color: Theme.of(context).iconTheme.color?.withOpacity(0.6),
+                ),
             ],
           ),
         ),
@@ -129,7 +180,7 @@ class _SettingsState extends State<Settings> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            color: Colors.white,
+            color: Theme.of(context).appBarTheme.backgroundColor,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,15 +188,23 @@ class _SettingsState extends State<Settings> {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.chevron_left, size: 32),
+                      icon: Icon(
+                        Icons.chevron_left, 
+                        size: 32,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
                       onPressed: () {
                         Get.to(const Profile());
                       },
                     ),
                     const SizedBox(width: 12),
-                    const Text(
+                    Text(
                       'Settings',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 24, 
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.titleLarge?.color,
+                      ),
                     ),
                   ],
                 ),
@@ -166,7 +225,7 @@ class _SettingsState extends State<Settings> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-      
+        backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
@@ -175,7 +234,9 @@ class _SettingsState extends State<Settings> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey, 
+        unselectedItemColor: Theme.of(context).brightness == Brightness.dark 
+            ? Colors.grey[400] 
+            : Colors.grey,
       ),
     );
   }
