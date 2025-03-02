@@ -32,12 +32,16 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildCustomTabBar() {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Container(
         height: 36,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 234, 236, 240),
+          color: isDarkMode 
+              ? Colors.grey[800] 
+              : const Color.fromARGB(255, 234, 236, 240),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Padding(
@@ -45,12 +49,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
           child: TabBar(
             controller: _tabController,
             indicator: BoxDecoration(
-              color: Colors.white,
+              color: isDarkMode ? Colors.grey[700] : Colors.white,
               borderRadius: BorderRadius.circular(16),
             ),
             dividerHeight: 0,
             labelColor: Colors.blue[400],
-            unselectedLabelColor: Colors.grey[800],
+            unselectedLabelColor: isDarkMode ? Colors.grey[400] : Colors.grey[800],
             indicatorSize: TabBarIndicatorSize.tab,
             labelStyle: const TextStyle(fontWeight: FontWeight.bold),
             tabs: const [
@@ -64,16 +68,22 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildActivitySection() {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Container(
-      color: Colors.grey[100],
+      color: isDarkMode ? Colors.grey[850] : Colors.grey[100],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Showing last month activity',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16, 
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ),
             ),
             const SizedBox(height: 10),
             Expanded( 
@@ -101,16 +111,22 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildAchievementsSection() {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Container(
-      color: Colors.grey[100],
+      color: isDarkMode ? Colors.grey[850] : Colors.grey[100],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               '2 achievements',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16, 
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ),
             ),
             const SizedBox(height: 10),
             Expanded(
@@ -128,10 +144,13 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildActivityItemWithPadding(String title, String subtitle, IconData icon, Color iconColor) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       child: Card(
         elevation: 2,
+        color: Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -141,14 +160,27 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    Text(
+                      title, 
+                      style: TextStyle(
+                        fontSize: 14, 
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                    ),
                     const SizedBox(height: 4),
-                    Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                    Text(
+                      subtitle, 
+                      style: TextStyle(
+                        fontSize: 12, 
+                        color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                      ),
+                    ),
                   ],
                 ),
               ),
               const SizedBox(width: 10),
-              Container(
+              SizedBox(
                 width: 40,
                 child: Icon(icon, color: iconColor, size: 30),
               ),
@@ -162,12 +194,14 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            color: Colors.white,
+            color: Theme.of(context).appBarTheme.backgroundColor,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,12 +209,20 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Your Profile',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 24, 
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.titleLarge?.color,
+                      ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.settings, size: 28),
+                      icon: Icon(
+                        Icons.settings, 
+                        size: 28,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
                       onPressed: () {
                         Get.to(const Settings());
                       },
@@ -199,15 +241,22 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'safeer ep',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            fontSize: 20, 
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).textTheme.titleLarge?.color,
+                          ),
                         ),
                         SizedBox(height: 4),
                         Text(
                           'Engineer',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 16, 
+                            color: isDarkMode ? Colors.grey[400] : Colors.grey,
+                          ),
                         ),
                       ],
                     ),
@@ -230,6 +279,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
@@ -240,7 +290,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey, 
+        unselectedItemColor: isDarkMode ? Colors.grey[400] : Colors.grey,
       ),
     );
   }
