@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:uuid/uuid.dart'; // Add this import
 import 'package:git_tracker/view/widgets/chevron_button.dart';
 import 'package:git_tracker/model/habit.dart';
+import 'package:git_tracker/db/helpers/habit_records_db_helper.dart'; // Add this import
 
 class ContributionChartWidget extends StatefulWidget {
   final Habit habit;
@@ -63,7 +65,18 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
                   ],
                 ),
                 ChevronButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    const uuid = Uuid();
+                    final String recordId = uuid.v4();
+                    await HabitRecordsDbHelper.instance.insertHabitRecord(
+                      recordId,
+                      widget.habit.id,
+                      DateTime.now(),
+                    );
+                    setState(() {
+                      // Trigger rebuild to update the UI
+                    });
+                  },
                   direction: "left",
                   icon: Icons.add,
                 )

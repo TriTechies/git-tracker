@@ -14,7 +14,7 @@ import 'package:git_tracker/view/signUp/sign_up.dart';
 import 'package:git_tracker/view/signUp/sign_up_continue.dart';
 import 'package:git_tracker/db/database_helper.dart';
 import 'view/passwordReset/password_reset.dart';
-import 'package:git_tracker/controller/habit_controller.dart';
+import 'package:git_tracker/controller/habits_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

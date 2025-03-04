@@ -44,6 +44,7 @@ dependencies:
     fl_chart: ^0.70.2
     flutter_colorpicker: ^1.0.2
     material_design_icons_flutter: ^7.0.7296
+    uuid: ^3.0.7
 
 dev_dependencies:
     flutter_test:
