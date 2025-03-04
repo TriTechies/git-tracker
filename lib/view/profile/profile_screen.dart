@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  void _onItemTapped(String path) {
+    Get.offAllNamed(path);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,28 +58,28 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.person_outline,
               title: 'Edit Profile',
               onTap: () {
-                // TODO: Implement edit profile
+                _onItemTapped('/profile');
               },
             ),
             _buildProfileOption(
               icon: Icons.settings_outlined,
               title: 'Settings',
               onTap: () {
-                // TODO: Implement settings
+                _onItemTapped('/settings');
               },
             ),
             _buildProfileOption(
               icon: Icons.help_outline,
               title: 'Help & Support',
               onTap: () {
-                // TODO: Implement help & support
+                _onItemTapped('/help-and-support');
               },
             ),
             _buildProfileOption(
               icon: Icons.logout,
               title: 'Logout',
               onTap: () {
-                // TODO: Implement logout
+                _onItemTapped('/home');
               },
             ),
           ],
