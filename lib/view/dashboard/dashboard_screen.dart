@@ -159,8 +159,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               );
             }
             return FutureBuilder<List<Habit>>(
-              future: HabitsDbHelper.instance
-                  .getAllHabits(), // Replace with your actual database call
+              future: HabitsDbHelper.instance.getAllHabits(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();

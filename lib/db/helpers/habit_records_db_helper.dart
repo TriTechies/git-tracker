@@ -1,3 +1,4 @@
+import 'package:git_tracker/model/habit_record.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -36,7 +37,8 @@ class HabitRecordsDbHelper {
   }
 
   // Create
-  Future<void> insertHabitRecord(String id, String habitId, DateTime createdAt) async {
+  Future<void> insertHabitRecord(
+      String id, String habitId, DateTime createdAt) async {
     final db = await database;
     await db.insert(
       'habit_records',
@@ -50,14 +52,18 @@ class HabitRecordsDbHelper {
   }
 
   // Read
-  Future<List<Map<String, dynamic>>> getHabitRecords(String habitId) async {
+  Future<List<HabitRecord>> getHabitRecords(String habitId) async {
     final db = await database;
-    return await db.query(
+    final List<Map<String, dynamic>> maps = await db.query(
       'habit_records',
       where: 'habitId = ?',
       whereArgs: [habitId],
       orderBy: 'createdAt DESC',
     );
+
+    return List.generate(maps.length, (i) {
+      return HabitRecord.fromMap(maps[i]);
+    });
   }
 
   // Delete

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'package:uuid/uuid.dart'; // Add this import
+import 'package:git_tracker/model/habit_record.dart';
+import 'package:uuid/uuid.dart';
 import 'package:git_tracker/view/widgets/chevron_button.dart';
 import 'package:git_tracker/model/habit.dart';
-import 'package:git_tracker/db/helpers/habit_records_db_helper.dart'; // Add this import
+import 'package:git_tracker/db/helpers/habit_records_db_helper.dart';
 
 class ContributionChartWidget extends StatefulWidget {
   final Habit habit;
@@ -15,6 +15,22 @@ class ContributionChartWidget extends StatefulWidget {
 }
 
 class _ContributionChartWidgetState extends State<ContributionChartWidget> {
+  List<HabitRecord> _habitRecords = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchHabitRecords();
+  }
+
+  Future<void> _fetchHabitRecords() async {
+    final records =
+        await HabitRecordsDbHelper.instance.getHabitRecords(widget.habit.id);
+    setState(() {
+      _habitRecords = records;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,7 +74,7 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '0/${widget.habit.frequency}',
+                          '${_habitRecords.length}/${widget.habit.frequency}',
                         ),
                       ],
                     ),
@@ -73,9 +89,7 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
                       widget.habit.id,
                       DateTime.now(),
                     );
-                    setState(() {
-                      // Trigger rebuild to update the UI
-                    });
+                    _fetchHabitRecords(); // Refresh the records
                   },
                   direction: "left",
                   icon: Icons.add,
@@ -83,7 +97,7 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
               ],
             ),
             const SizedBox(height: 10),
-            ContributionGrid(),
+            ContributionGrid(habitRecords: _habitRecords),
           ],
         ),
       ),
@@ -92,16 +106,11 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
 }
 
 class ContributionGrid extends StatelessWidget {
+  final List<HabitRecord> habitRecords;
   final int rows = 5;
   final int columns = 20;
-  final Random random = Random();
 
-  ContributionGrid({super.key});
-
-  Color getRandomGreen() {
-    int intensity = random.nextInt(150); // Random green shade
-    return Color.fromARGB(255, 0, intensity, 0);
-  }
+  const ContributionGrid({super.key, required this.habitRecords});
 
   @override
   Widget build(BuildContext context) {
@@ -110,12 +119,14 @@ class ContributionGrid extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(columns, (colIndex) {
+            int index = rowIndex * columns + colIndex;
+            bool isActive = index < habitRecords.length;
             return Container(
               margin: const EdgeInsets.all(2),
               width: 15,
               height: 15,
               decoration: BoxDecoration(
-                color: getRandomGreen(),
+                color: isActive ? Colors.green : Colors.grey,
                 borderRadius: BorderRadius.circular(3),
               ),
             );
