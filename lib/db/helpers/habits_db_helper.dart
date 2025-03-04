@@ -2,11 +2,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../../model/habit.dart';
 
-class HabitDbHelper {
-  static final HabitDbHelper instance = HabitDbHelper._init();
+class HabitsDbHelper {
+  static final HabitsDbHelper instance = HabitsDbHelper._init();
   static Database? _database;
 
-  HabitDbHelper._init();
+  HabitsDbHelper._init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
