@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  void _onItemTapped(String path) {
+    Get.toNamed(path);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,15 +20,10 @@ class ProfileScreen extends StatelessWidget {
         title: const Text('Profile'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Profile',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
             const Center(
               child: Column(
                 children: [
@@ -48,28 +53,28 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.person_outline,
               title: 'Edit Profile',
               onTap: () {
-                // TODO: Implement edit profile
+                _onItemTapped('/profile');
               },
             ),
             _buildProfileOption(
               icon: Icons.settings_outlined,
               title: 'Settings',
               onTap: () {
-                // TODO: Implement settings
+                _onItemTapped('/settings');
               },
             ),
             _buildProfileOption(
               icon: Icons.help_outline,
               title: 'Help & Support',
               onTap: () {
-                // TODO: Implement help & support
+                _onItemTapped('/help-and-support');
               },
             ),
             _buildProfileOption(
               icon: Icons.logout,
               title: 'Logout',
               onTap: () {
-                // TODO: Implement logout
+                _onItemTapped('/home');
               },
             ),
           ],
@@ -83,10 +88,10 @@ class ProfileScreen extends StatelessWidget {
     required String title,
     required VoidCallback onTap,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: InkWell(
-        onTap: onTap,
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
             Icon(icon, size: 24),

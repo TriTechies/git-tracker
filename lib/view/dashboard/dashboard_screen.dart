@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:git_tracker/db/helpers/habit_db_helper.dart';
+import 'package:git_tracker/db/helpers/habits_db_helper.dart';
 import 'package:git_tracker/view/dashboard/widgets/contribution_chart_widget.dart';
 import 'package:git_tracker/view/dashboard/widgets/habit_graph.dart';
 import 'package:git_tracker/view/dashboard/widgets/status_widget.dart';
-import 'package:git_tracker/view/add_habit/add_habit_screen.dart';
+import 'package:git_tracker/view/add_habit/add_habits_screen.dart';
 import 'package:git_tracker/view/profile/profile_screen.dart';
 import 'package:git_tracker/model/habit.dart';
 import 'package:get/get.dart';
-import 'package:git_tracker/controller/habit_controller.dart';
+import 'package:git_tracker/controller/habits_controller.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -34,7 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       // Navigate to Add Habit Screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AddHabitScreen()),
+        MaterialPageRoute(builder: (context) => const AddHabitsScreen()),
       );
       return;
     } else if (index == 2) {
@@ -159,8 +159,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               );
             }
             return FutureBuilder<List<Habit>>(
-              future: HabitDbHelper.instance
-                  .getAllHabits(), // Replace with your actual database call
+              future: HabitsDbHelper.instance.getAllHabits(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -203,7 +202,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             ),
             TextButton(
               onPressed: () async {
-                await HabitDbHelper.instance.deleteAllHabits();
+                await HabitsDbHelper.instance.deleteAllHabits();
                 Navigator.of(context).pop();
                 setState(() {}); // Refresh the UI
               },

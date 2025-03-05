@@ -5,16 +5,16 @@ import 'package:git_tracker/view/widgets/chevron_button.dart';
 import 'package:git_tracker/view/widgets/my_button.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
-import 'package:git_tracker/controller/habit_controller.dart';
+import 'package:git_tracker/controller/habits_controller.dart';
 
-class AddHabitScreen extends StatefulWidget {
-  const AddHabitScreen({super.key});
+class AddHabitsScreen extends StatefulWidget {
+  const AddHabitsScreen({super.key});
 
   @override
-  State<AddHabitScreen> createState() => _AddHabitScreenState();
+  State<AddHabitsScreen> createState() => _AddHabitsScreenState();
 }
 
-class _AddHabitScreenState extends State<AddHabitScreen> {
+class _AddHabitsScreenState extends State<AddHabitsScreen> {
   final habitController = Get.find<HabitController>();
   IconData selectedIcon = Icons.fitness_center;
   Color selectedColor = Colors.blue;
