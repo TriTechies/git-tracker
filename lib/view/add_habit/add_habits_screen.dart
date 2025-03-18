@@ -22,7 +22,8 @@ class _AddHabitsScreenState extends State<AddHabitsScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _durationController = TextEditingController();
-  final TextEditingController _frequencyController = TextEditingController();
+  final TextEditingController _frequencyController =
+      TextEditingController(text: '1');
 
   String _habitType = 'build';
   String _interval = 'daily';
@@ -312,6 +313,12 @@ class _AddHabitsScreenState extends State<AddHabitsScreen> {
                             border: OutlineInputBorder(),
                           ),
                           keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            if (int.tryParse(value) == null ||
+                                int.parse(value) < 1) {
+                              _frequencyController.text = '1';
+                            }
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),

@@ -66,6 +66,24 @@ class HabitRecordsDbHelper {
     });
   }
 
+  // Get habit records of the last week
+  Future<List<HabitRecord>> getHabitRecordsOfLastWeek() async {
+    final db = await database;
+    final now = DateTime.now();
+    final lastWeek = now.subtract(const Duration(days: 7));
+
+    final List<Map<String, dynamic>> maps = await db.query(
+      'habit_records',
+      where: 'createdAt >= ?',
+      whereArgs: [lastWeek.toIso8601String()],
+      orderBy: 'createdAt DESC',
+    );
+
+    return List.generate(maps.length, (i) {
+      return HabitRecord.fromMap(maps[i]);
+    });
+  }
+
   // Delete
   Future<void> deleteHabitRecord(String id) async {
     final db = await database;

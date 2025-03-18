@@ -175,7 +175,12 @@ class _DashboardScreenState extends State<DashboardScreen>
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     final habit = snapshot.data![index];
-                    return ContributionChartWidget(habit: habit);
+                    return Column(
+                      children: [
+                        ContributionChartWidget(habit: habit),
+                        const SizedBox(height: 10), // Add space between widgets
+                      ],
+                    );
                   },
                 );
               },

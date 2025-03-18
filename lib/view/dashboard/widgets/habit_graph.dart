@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:git_tracker/view/widgets/chevron_button.dart';
+import 'package:git_tracker/db/helpers/habit_records_db_helper.dart';
 
 class HabitGraph extends StatefulWidget {
   const HabitGraph({super.key});
@@ -11,6 +12,41 @@ class HabitGraph extends StatefulWidget {
 
 class _HabitGraphState extends State<HabitGraph> {
   bool _isExpanded = true;
+  List<FlSpot> _spots = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    final records =
+        await HabitRecordsDbHelper.instance.getHabitRecordsOfLastWeek();
+
+    final now = DateTime.now();
+    final Map<int, int> groupedData = {};
+
+    for (int i = 0; i < 7; i++) {
+      final day = now.subtract(Duration(days: i)).day;
+      groupedData[day] = 0;
+    }
+
+    for (final record in records) {
+      final day = record.createdAt.day;
+      if (groupedData.containsKey(day)) {
+        groupedData[day] = groupedData[day]! + 1;
+      }
+    }
+
+    final List<FlSpot> spots = groupedData.entries
+        .map((entry) => FlSpot(entry.key.toDouble(), entry.value.toDouble()))
+        .toList();
+
+    setState(() {
+      _spots = spots;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,13 +124,7 @@ class _HabitGraphState extends State<HabitGraph> {
                       borderData: FlBorderData(show: false),
                       lineBarsData: [
                         LineChartBarData(
-                          spots: [
-                            const FlSpot(0, 1),
-                            const FlSpot(1, 3),
-                            const FlSpot(2, 2),
-                            const FlSpot(3, 5),
-                            const FlSpot(4, 4),
-                          ],
+                          spots: _spots,
                           isCurved: true,
                           // colors: [Colors.blue],
                           dotData: const FlDotData(show: false),

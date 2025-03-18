@@ -16,6 +16,7 @@ class ContributionChartWidget extends StatefulWidget {
 
 class _ContributionChartWidgetState extends State<ContributionChartWidget> {
   List<HabitRecord> _habitRecords = [];
+  int _todayRecordCount = 0;
 
   @override
   void initState() {
@@ -26,9 +27,30 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
   Future<void> _fetchHabitRecords() async {
     final records =
         await HabitRecordsDbHelper.instance.getHabitRecords(widget.habit.id);
+    final today = DateTime.now();
+    final todayRecords = records
+        .where((record) =>
+            record.createdAt.year == today.year &&
+            record.createdAt.month == today.month &&
+            record.createdAt.day == today.day)
+        .toList();
     setState(() {
       _habitRecords = records;
+      _todayRecordCount = todayRecords.length;
     });
+  }
+
+  Future<void> _addHabitRecords() async {
+    if (_todayRecordCount != widget.habit.frequency) {
+      const uuid = Uuid();
+      final String recordId = uuid.v4();
+      await HabitRecordsDbHelper.instance.insertHabitRecord(
+        recordId,
+        widget.habit.id,
+        DateTime.now(),
+      );
+      _fetchHabitRecords(); // Refresh the records
+    }
   }
 
   @override
@@ -74,30 +96,29 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '${_habitRecords.length}/${widget.habit.frequency}',
+                          '$_todayRecordCount/${widget.habit.frequency}',
                         ),
                       ],
                     ),
                   ],
                 ),
                 ChevronButton(
-                  onPressed: () async {
-                    const uuid = Uuid();
-                    final String recordId = uuid.v4();
-                    await HabitRecordsDbHelper.instance.insertHabitRecord(
-                      recordId,
-                      widget.habit.id,
-                      DateTime.now(),
-                    );
-                    _fetchHabitRecords(); // Refresh the records
-                  },
+                  onPressed: _addHabitRecords,
                   direction: "left",
-                  icon: Icons.add,
+                  icon: _todayRecordCount == widget.habit.frequency
+                      ? Icons.check
+                      : Icons.add,
+                  backgroundColor: widget.habit.color,
+                  showBackgroundColor:
+                      _todayRecordCount == widget.habit.frequency,
                 )
               ],
             ),
             const SizedBox(height: 10),
-            ContributionGrid(habitRecords: _habitRecords),
+            ContributionGrid(
+                habitRecords: _habitRecords,
+                habitColor: widget.habit.color,
+                habitFrequency: widget.habit.frequency),
           ],
         ),
       ),
@@ -109,24 +130,58 @@ class ContributionGrid extends StatelessWidget {
   final List<HabitRecord> habitRecords;
   final int rows = 5;
   final int columns = 20;
+  final Color habitColor;
+  final int habitFrequency;
 
-  const ContributionGrid({super.key, required this.habitRecords});
+  const ContributionGrid(
+      {super.key,
+      required this.habitRecords,
+      required this.habitColor,
+      required this.habitFrequency});
+
+  // Group habit records by date and count their occurrences
+  Map<String, int> _groupHabitRecordsByDate() {
+    Map<String, int> groupedRecords = {};
+    for (var record in habitRecords) {
+      String dateKey = record.createdAt.toIso8601String().split('T')[0];
+      groupedRecords[dateKey] = (groupedRecords[dateKey] ?? 0) + 1;
+    }
+    return groupedRecords;
+  }
+
+  // Get color intensity based on record count and habit frequency
+  Color _getColorBasedOnCount(int count) {
+    double intensity =
+        (count / habitFrequency).clamp(0.0, 1.0); // Ranges from 0.0 to 1.0
+    return habitColor.withValues(
+        alpha: intensity); // Adjust opacity based on intensity
+  }
 
   @override
   Widget build(BuildContext context) {
+    final groupedRecords = _groupHabitRecordsByDate();
+    final recordDates = groupedRecords.keys.toList();
+
     return Column(
       children: List.generate(rows, (rowIndex) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: List.generate(columns, (colIndex) {
             int index = rowIndex * columns + colIndex;
-            bool isActive = index < habitRecords.length;
+            bool isActive = index < recordDates.length;
+
+            // Get saturation based on count
+            final color = isActive
+                ? _getColorBasedOnCount(groupedRecords[recordDates[index]]!)
+                : habitColor.withValues(
+                    alpha: 0.05); // Lighter version of the habit color
+
             return Container(
               margin: const EdgeInsets.all(2),
               width: 15,
               height: 15,
               decoration: BoxDecoration(
-                color: isActive ? Colors.green : Colors.grey,
+                color: color,
                 borderRadius: BorderRadius.circular(3),
               ),
             );

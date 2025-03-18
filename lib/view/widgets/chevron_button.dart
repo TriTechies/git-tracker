@@ -4,12 +4,16 @@ class ChevronButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String direction;
   final IconData? icon;
+  final Color? backgroundColor;
+  final bool? showBackgroundColor;
 
   const ChevronButton({
     super.key,
     required this.onPressed,
     required this.direction,
     this.icon,
+    this.backgroundColor,
+    this.showBackgroundColor = false,
   });
 
   IconData _getChevronIcon() {
@@ -31,19 +35,29 @@ class ChevronButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
+    return Material(
+      color: (showBackgroundColor ?? false)
+          ? (backgroundColor ?? Colors.transparent)
+          : Colors.transparent,
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        onTap: onPressed,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: const Color.fromARGB(255, 234, 236, 240),
-          width: 1,
-        ),
-      ),
-      child: IconButton(
-        onPressed: onPressed,
-        icon: RotatedBox(
-          quarterTurns: _getQuarterTurns(),
-          child: Icon(_getChevronIcon()),
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color.fromARGB(255, 234, 236, 240),
+              width: 1,
+            ),
+          ),
+          child: Center(
+            child: RotatedBox(
+              quarterTurns: _getQuarterTurns(),
+              child: Icon(_getChevronIcon()),
+            ),
+          ),
         ),
       ),
     );
