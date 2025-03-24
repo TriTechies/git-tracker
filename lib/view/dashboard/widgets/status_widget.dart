@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:git_tracker/view/dashboard/widgets/summary_info_tile.dart';
 import 'package:git_tracker/view/widgets/chevron_button.dart';
+import 'package:git_tracker/db/helpers/habit_records_db_helper.dart';
 
 class StatusWidget extends StatefulWidget {
   const StatusWidget({super.key});
@@ -10,6 +12,60 @@ class StatusWidget extends StatefulWidget {
 
 class _StatusWidgetState extends State<StatusWidget> {
   bool _isExpanded = true;
+  String _successRate = '0%';
+  String _completed = '0';
+  String _pointsEarned = '0';
+  String _bestStreakDay = '0';
+  String _skipped = '0';
+  String _failed = '0';
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    final records =
+        await HabitRecordsDbHelper.instance.getHabitRecordsOfLastWeek();
+
+    // Process the records to calculate the required data
+    final now = DateTime.now();
+    int completed = 0;
+    int skipped = 0;
+    int failed = 0;
+    int pointsEarned = 0;
+    int bestStreakDay = 0;
+    int currentStreak = 0;
+    int successRate = 0;
+
+    for (final record in records) {
+      completed++;
+      pointsEarned += 10; // Assuming each completed habit earns 10 points
+      final day = record.createdAt.day;
+      if (day == now.day) {
+        currentStreak++;
+      } else {
+        if (currentStreak > bestStreakDay) {
+          bestStreakDay = currentStreak;
+        }
+        currentStreak = 0;
+      }
+    }
+
+    if (completed > 0) {
+      successRate = (completed / (completed + skipped + failed) * 100).toInt();
+    }
+
+    setState(() {
+      _successRate = '$successRate%';
+      _completed = '$completed';
+      _pointsEarned = '$pointsEarned';
+      _bestStreakDay = '$bestStreakDay';
+      _skipped = '$skipped';
+      _failed = '$failed';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,37 +132,48 @@ class _StatusWidgetState extends State<StatusWidget> {
               ),
               const SizedBox(height: 10),
               if (_isExpanded) // Show the expanded content
-                const Column(
+                Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
-                            child:
-                                _InfoTile(title: 'Success Rate', value: '95%')),
+                            child: SummaryInfoTile(
+                                title: 'Success Rate', value: _successRate)),
                         Expanded(
-                            child: _InfoTile(title: 'Completed', value: '120')),
+                            child: SummaryInfoTile(
+                                title: 'Completed', value: _completed)),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
-                            child: _InfoTile(
-                                title: 'Points Earned', value: '300')),
+                            child: SummaryInfoTile(
+                          title: 'Points Earned',
+                          value: _pointsEarned,
+                          icon: Icons.auto_awesome_sharp,
+                          backgroundColor:
+                              const Color.fromARGB(255, 255, 243, 218),
+                          textColor: const Color.fromARGB(255, 254, 168, 0),
+                        )),
                         Expanded(
-                            child: _InfoTile(
-                                title: 'Best Streak Day', value: '10')),
+                            child: SummaryInfoTile(
+                                title: 'Best Streak Day',
+                                value: _bestStreakDay)),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
-                            child: _InfoTile(title: 'Skipped', value: '5')),
-                        Expanded(child: _InfoTile(title: 'Failed', value: '2')),
+                            child: SummaryInfoTile(
+                                title: 'Skipped', value: _skipped)),
+                        Expanded(
+                            child: SummaryInfoTile(
+                                title: 'Failed', value: _failed)),
                       ],
                     ),
                   ],
@@ -115,41 +182,6 @@ class _StatusWidgetState extends State<StatusWidget> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _InfoTile extends StatelessWidget {
-  final String title;
-  final String value;
-
-  const _InfoTile({
-    Key? key,
-    required this.title,
-    required this.value,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.grey, // Gray color for the title
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 18, // Larger font size for the value
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
     );
   }
 }
