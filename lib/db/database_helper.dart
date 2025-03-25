@@ -46,122 +46,36 @@ class DatabaseHelper extends GetxController {
         FOREIGN KEY (user_id) REFERENCES users (id)
       )
     ''');
+
+    await db.execute('''
+      CREATE TABLE habits(
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        durationMinutes INTEGER,
+        icon INTEGER,
+        color INTEGER,
+        type TEXT,
+        frequency INTEGER,
+        interval TEXT,
+        hasReminder BOOLEAN,
+        createdAt TEXT,
+        lastCompleted TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE habit_records(
+        id TEXT PRIMARY KEY,
+        habitId TEXT NOT NULL,
+        createdAt TEXT NOT NULL,
+        FOREIGN KEY (habitId) REFERENCES habits (id) ON DELETE CASCADE
+      )
+    ''');
   }
 
-  // User operations
-  Future<int> insertUser(Map<String, dynamic> user) async {
-    Database db = await database;
-    return await db.insert('users', user);
-  }
-
-  Future<int> insertUserHabit(int userId, String habit) async {
-    Database db = await database;
-    return await db.insert('user_habits', {
-      'user_id': userId,
-      'habit': habit,
-    });
-  }
-
-  Future<Map<String, dynamic>?> getUserByEmail(String email) async {
-    Database db = await database;
-    List<Map<String, dynamic>> results = await db.query(
-      'users',
-      where: 'email = ?',
-      whereArgs: [email],
-    );
-    return results.isNotEmpty ? results.first : null;
-  }
-
-  Future<List<String>> getUserHabits(int userId) async {
-    Database db = await database;
-    List<Map<String, dynamic>> results = await db.query(
-      'user_habits',
-      where: 'user_id = ?',
-      whereArgs: [userId],
-    );
-    return results.map((habit) => habit['habit'] as String).toList();
-  }
-
-  // Get all users - for debugging/testing
-  Future<List<Map<String, dynamic>>> getAllUsers() async {
-    Database db = await database;
-    return await db.query('users');
-  }
-
-  // Print users table - helper method
-  Future<void> printUsersTable() async {
-    try {
-      final users = await getAllUsers();
-      print('\n=== Users Table Contents ===');
-      for (var user in users) {
-        print('ID: ${user['id']}');
-        print('Name: ${user['name']}');
-        print('Email: ${user['email']}');
-        print('Date of Birth: ${user['date_of_birth']}');
-        print('Gender: ${user['gender']}');
-        print('Created at: ${user['created_at']}');
-        print('------------------------');
-      }
-      print('Total users: ${users.length}\n');
-    } catch (e) {
-      print('Error printing users table: $e');
-    }
-  }
-
-  Future<Map<String, dynamic>> login(String email, String password) async {
-    Database db = await database;
-    try {
-      List<Map<String, dynamic>> results = await db.query(
-        'users',
-        where: 'email = ? AND password = ?',
-        whereArgs: [email, password],
-      );
-
-      if (results.isNotEmpty) {
-        Get.offNamed('/gender');
-        print('Login successful');
-        return {
-          'success': true,
-          'user': results.first,
-          'message': 'Login successful'
-        };
-      } else {
-        print('Login Failed');
-        return {
-          'success': false,
-          'user': null,
-          'message': 'Invalid email or password'
-        };
-      }
-    } catch (e) {
-      return {
-        'success': false,
-        'user': null,
-        'message': 'An error occurred during login'
-      };
-    }
-  }
-
-  Future<Map<String, dynamic>> updatePassword(
-      String email, String newpasswod) async {
-    Database db = await database;
-    try {
-      var user = await getUserByEmail(email);
-      if (user == null) {
-        return {'success': false, 'message': 'User not found'};
-      }
-      int updateRows = await db.update('users', {'password': newpasswod},
-          where: 'email = ? ', whereArgs: [email]);
-      if (updateRows > 0) {
-        return {'success': true, 'message': 'Password Updated successfully'};
-      } else {
-        return {'success': false, 'message': 'Failed to update password'};
-      }
-    } catch (e) {
-      return {
-        'success':false,
-        'message':'An error occured pleas try agian'
-      };
-    }
+  Future<void> closeDB() async {
+    final db = await database;
+    db.close();
   }
 }

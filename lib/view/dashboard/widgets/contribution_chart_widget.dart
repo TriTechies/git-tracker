@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:git_tracker/model/habit_record.dart';
-import 'package:uuid/uuid.dart';
-import 'package:git_tracker/view/widgets/chevron_button.dart';
+import 'package:git_tracker/db/helpers/habit_records_dao.dart';
 import 'package:git_tracker/model/habit.dart';
-import 'package:git_tracker/db/helpers/habit_records_db_helper.dart';
+import 'package:git_tracker/model/habit_record.dart';
+import 'package:git_tracker/view/widgets/chevron_button.dart';
+import 'package:uuid/uuid.dart';
 
 class ContributionChartWidget extends StatefulWidget {
   final Habit habit;
@@ -17,6 +17,7 @@ class ContributionChartWidget extends StatefulWidget {
 class _ContributionChartWidgetState extends State<ContributionChartWidget> {
   List<HabitRecord> _habitRecords = [];
   int _todayRecordCount = 0;
+  final habitRecordDao = HabitRecordsDao();
 
   @override
   void initState() {
@@ -25,8 +26,7 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
   }
 
   Future<void> _fetchHabitRecords() async {
-    final records =
-        await HabitRecordsDbHelper.instance.getHabitRecords(widget.habit.id);
+    final records = await habitRecordDao.getHabitRecords(widget.habit.id);
     final today = DateTime.now();
     final todayRecords = records
         .where((record) =>
@@ -44,7 +44,7 @@ class _ContributionChartWidgetState extends State<ContributionChartWidget> {
     if (_todayRecordCount != widget.habit.frequency) {
       const uuid = Uuid();
       final String recordId = uuid.v4();
-      await HabitRecordsDbHelper.instance.insertHabitRecord(
+      await habitRecordDao.insertHabitRecord(
         recordId,
         widget.habit.id,
         DateTime.now(),
@@ -142,10 +142,24 @@ class ContributionGrid extends StatelessWidget {
   // Group habit records by date and count their occurrences
   Map<String, int> _groupHabitRecordsByDate() {
     Map<String, int> groupedRecords = {};
+    if (habitRecords.isEmpty) return groupedRecords;
+
+    DateTime startDate = habitRecords.first.createdAt;
+    DateTime endDate = habitRecords.last.createdAt;
+
     for (var record in habitRecords) {
       String dateKey = record.createdAt.toIso8601String().split('T')[0];
       groupedRecords[dateKey] = (groupedRecords[dateKey] ?? 0) + 1;
     }
+
+    // Fill in missing dates with 0 count
+    for (DateTime date = startDate;
+        date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+        date = date.add(const Duration(days: 1))) {
+      String dateKey = date.toIso8601String().split('T')[0];
+      groupedRecords[dateKey] = groupedRecords[dateKey] ?? 0;
+    }
+
     return groupedRecords;
   }
 
@@ -153,14 +167,17 @@ class ContributionGrid extends StatelessWidget {
   Color _getColorBasedOnCount(int count) {
     double intensity =
         (count / habitFrequency).clamp(0.0, 1.0); // Ranges from 0.0 to 1.0
-    return habitColor.withValues(
-        alpha: intensity); // Adjust opacity based on intensity
+    return habitColor
+        .withOpacity(intensity); // Adjust opacity based on intensity
   }
 
   @override
   Widget build(BuildContext context) {
     final groupedRecords = _groupHabitRecordsByDate();
-    final recordDates = groupedRecords.keys.toList();
+    final recordDates = groupedRecords.keys
+        .toList()
+        .reversed
+        .toList(); // Reverse the list of dates
 
     return Column(
       children: List.generate(rows, (rowIndex) {
@@ -173,8 +190,8 @@ class ContributionGrid extends StatelessWidget {
             // Get saturation based on count
             final color = isActive
                 ? _getColorBasedOnCount(groupedRecords[recordDates[index]]!)
-                : habitColor.withValues(
-                    alpha: 0.05); // Lighter version of the habit color
+                : habitColor
+                    .withOpacity(0.05); // Lighter version of the habit color
 
             return Container(
               margin: const EdgeInsets.all(2),

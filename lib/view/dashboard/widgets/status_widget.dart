@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:git_tracker/view/dashboard/widgets/summary_info_tile.dart';
 import 'package:git_tracker/view/widgets/chevron_button.dart';
-import 'package:git_tracker/db/helpers/habit_records_db_helper.dart';
+import 'package:git_tracker/db/helpers/habit_records_dao.dart';
 
 class StatusWidget extends StatefulWidget {
-  const StatusWidget({super.key});
+  final String interval; // Add interval parameter
+
+  const StatusWidget({super.key, required this.interval});
 
   @override
   State<StatusWidget> createState() => _StatusWidgetState();
@@ -26,8 +28,9 @@ class _StatusWidgetState extends State<StatusWidget> {
   }
 
   Future<void> _fetchData() async {
+    final habitRecordDao = HabitRecordsDao();
     final records =
-        await HabitRecordsDbHelper.instance.getHabitRecordsOfLastWeek();
+        await habitRecordDao.getHabitRecordsOfLastWeek(widget.interval);
 
     // Process the records to calculate the required data
     final now = DateTime.now();
