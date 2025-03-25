@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:git_tracker/db/helpers/habits_db_helper.dart';
+import 'package:git_tracker/db/helpers/habit_records_dao.dart';
+import 'package:git_tracker/db/helpers/habits_dao.dart';
 import 'package:git_tracker/view/dashboard/widgets/contribution_chart_widget.dart';
 import 'package:git_tracker/view/dashboard/widgets/habit_graph.dart';
 import 'package:git_tracker/view/dashboard/widgets/status_widget.dart';
@@ -68,9 +69,9 @@ class _DashboardScreenState extends State<DashboardScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          buildDashboardContent(),
-          buildDashboardContent(),
-          buildDashboardContent(),
+          buildDashboardContent('daily'),
+          buildDashboardContent('weekly'),
+          buildDashboardContent('monthly'),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -123,7 +124,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget buildDashboardContent() {
+  Widget buildDashboardContent(String interval) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -132,9 +133,11 @@ class _DashboardScreenState extends State<DashboardScreen>
           const Text('Welcome, User!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
-          const StatusWidget(),
+          StatusWidget(
+            interval: interval,
+          ),
           const SizedBox(height: 20),
-          const HabitGraph(),
+          HabitGraph(interval: interval),
           const SizedBox(height: 20),
           // Your Habits section with Delete All button
           Row(
@@ -158,8 +161,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                 child: Text('No habits yet. Create one!'),
               );
             }
+            final habitsDao = HabitsDao();
             return FutureBuilder<List<Habit>>(
-              future: HabitsDbHelper.instance.getAllHabits(),
+              future: habitsDao.getAllHabitsWithInterval(interval),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -193,6 +197,8 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   // Add this new method to show confirmation dialog
   Future<void> _showDeleteConfirmationDialog() async {
+    final habitsDao = HabitsDao();
+    final habitRecordDao = HabitRecordsDao();
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -207,7 +213,8 @@ class _DashboardScreenState extends State<DashboardScreen>
             ),
             TextButton(
               onPressed: () async {
-                await HabitsDbHelper.instance.deleteAllHabits();
+                await habitsDao.deleteAllHabits();
+                await habitRecordDao.deleteAllHabitRecords();
                 Navigator.of(context).pop();
                 setState(() {}); // Refresh the UI
               },

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:git_tracker/view/widgets/chevron_button.dart';
-import 'package:git_tracker/db/helpers/habit_records_db_helper.dart';
+import 'package:git_tracker/db/helpers/habit_records_dao.dart';
 
 class HabitGraph extends StatefulWidget {
-  const HabitGraph({super.key});
+  final String interval;
+  const HabitGraph({super.key, required this.interval});
 
   @override
   State<HabitGraph> createState() => _HabitGraphState();
@@ -13,6 +14,7 @@ class HabitGraph extends StatefulWidget {
 class _HabitGraphState extends State<HabitGraph> {
   bool _isExpanded = true;
   List<FlSpot> _spots = [];
+  final habitRecordDao = HabitRecordsDao();
 
   @override
   void initState() {
@@ -22,7 +24,7 @@ class _HabitGraphState extends State<HabitGraph> {
 
   Future<void> _fetchData() async {
     final records =
-        await HabitRecordsDbHelper.instance.getHabitRecordsOfLastWeek();
+        await habitRecordDao.getHabitRecordsOfLastWeek(widget.interval);
 
     final now = DateTime.now();
     final Map<int, int> groupedData = {};

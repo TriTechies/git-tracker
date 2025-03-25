@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:git_tracker/controller/text_controller.dart';
+import 'package:git_tracker/db/helpers/users_dao.dart';
 import 'package:git_tracker/view/style/style.dart';
 import 'package:git_tracker/view/widgets/my_button.dart';
 import 'package:git_tracker/view/widgets/text_fields.dart';
-import 'package:git_tracker/db/database_helper.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final controller = Get.find<TextController>();
-    final serviceController = Get.find<DatabaseHelper>();
+    final serviceController = Get.find<UsersDao>();
 
     return Scaffold(
       backgroundColor: Colors.white,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:git_tracker/controller/text_controller.dart';
-import 'package:git_tracker/db/database_helper.dart';
+import 'package:git_tracker/db/helpers/users_dao.dart';
 import 'package:git_tracker/view/widgets/my_card_row.dart';
 
 import '../style/style.dart';
@@ -13,7 +13,7 @@ class GenderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<TextController>();
-    final serviceController = Get.find<DatabaseHelper>();
+    final serviceController = Get.find<UsersDao>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
