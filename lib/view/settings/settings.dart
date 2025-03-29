@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:git_tracker/view/profile/user_profile.dart';
 import 'package:git_tracker/controller/theme_controller.dart';
+import 'package:git_tracker/view/settings/general_settings_page.dart';
+import 'package:git_tracker/view/settings/security_page.dart';
+import 'package:git_tracker/view/settings/notifications_page.dart';
+import 'package:git_tracker/view/settings/rate_us_page.dart';
+import 'package:git_tracker/view/settings/share_page.dart';
+import 'package:git_tracker/view/settings/about_us_page.dart';
+import 'package:git_tracker/view/settings/support_page.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -132,7 +139,31 @@ class _SettingsState extends State<Settings> {
         onTap: showToggle
             ? null
             : () {
-                print('$title tapped');
+                switch (title) {
+                  case 'General':
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const GeneralSettings()));
+                    break;
+                  case 'Security':
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const SecurityPage()));
+                    break;
+                  case 'Notifications':
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsPage()));
+                    break;
+                  case 'Rate Us':
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const RateUsPage()));
+                    break;
+                  case 'Share':
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const SharePage()));
+                    break;
+                  case 'About Us':
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const AboutUsPage()));
+                    break;
+                  case 'Support':
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const SupportPage()));
+                    break;
+                  default:
+                    print('$title tapped');
+                }
               },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
