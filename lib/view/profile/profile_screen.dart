@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../db/helpers/users_dao.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -15,6 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final serviceController = Get.find<UsersDao>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -74,7 +77,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.logout,
               title: 'Logout',
               onTap: () {
-                _onItemTapped('/home');
+                // _onItemTapped('/home');
+                serviceController.logout();
               },
             ),
           ],

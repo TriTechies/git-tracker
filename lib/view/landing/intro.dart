@@ -51,22 +51,12 @@ class _IntroState extends State<Intro> {
                 name: "Continue With E-mail",
                 color: Colors.white,
                 onPressed: () {
-                  Get.offAllNamed('/login');
+                  Get.toNamed('/login');
                 },
                 textColor: Colors.black,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, bottom: 40),
-              child: MyButton(
-                name: "Skip to dashboard",
-                color: Colors.white,
-                onPressed: () {
-                  Get.offAllNamed('/dashboard');
-                },
-                textColor: Colors.black,
-              ),
-            ),
+          
           ],
         ),
       ),

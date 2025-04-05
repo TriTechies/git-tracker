@@ -25,7 +25,7 @@ class HabitCard extends StatelessWidget {
         elevation: 4,
         child: SizedBox(
           height: 64,
-          width: 360,
+          width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: Row(

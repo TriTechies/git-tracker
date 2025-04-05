@@ -70,6 +70,7 @@ class LoginPage extends StatelessWidget {
                 child: CustomTextField(
                   height: 20,
                   hintText: "Password",
+                  showPasswordToggle: true,
                   width: 345,
                   type: TextInputType.visiblePassword,
                   obsured: true,
@@ -86,7 +87,7 @@ class LoginPage extends StatelessWidget {
                   ? const Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                        padding: EdgeInsets.only(top: 8.0, left: 20.0),
+                        padding: EdgeInsets.only(top: 8.0, left: 40.0),
                         child: Text(
                           'Invalid email or password',
                           style: TextStyle(color: Colors.red, fontSize: 12),
@@ -98,7 +99,7 @@ class LoginPage extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
+                  padding: const EdgeInsets.only(left: 40.0),
                   child: TextButton(
                     onPressed: () {
                       Get.toNamed('/forgotpassword');
@@ -144,6 +145,7 @@ class LoginPage extends StatelessWidget {
                 formKey.currentState?.validate();
               }
             }
+            serviceController.printUsersTable();
           },
         ),
       ),

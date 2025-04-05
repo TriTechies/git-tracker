@@ -33,22 +33,27 @@ class SignUpContinue extends StatelessWidget {
         child: Form(
           key: formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: CustomTextField(
-                  height: 20,
-                  hintText: "Please enter your email",
-                  width: 345,
-                  type: TextInputType.emailAddress,
-                  obsured: false,
-                  controller: controller.signUpEmail,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    return null;
-                  },
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: CustomTextField(
+                    height: 20,
+                    hintText: "Please enter your email",
+                    width: 345,
+                    type: TextInputType.emailAddress,
+                    obsured: false,
+                    controller: controller.signUpEmail,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
               Padding(
