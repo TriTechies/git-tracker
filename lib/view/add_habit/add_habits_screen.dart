@@ -175,7 +175,7 @@ class _AddHabitsScreenState extends State<AddHabitsScreen> {
         'Habit created successfully!',
         snackPosition: SnackPosition.BOTTOM,
       );
-      Get.back(); // Navigate back
+      Navigator.of(context).pop();
     } catch (e) {
       Get.snackbar(
         'Error',
