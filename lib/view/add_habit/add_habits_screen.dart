@@ -189,14 +189,28 @@ class _AddHabitsScreenState extends State<AddHabitsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 4.0),
-          child: ChevronButton(
-            onPressed: () => Navigator.of(context).pop(),
-            direction: 'left',
+        automaticallyImplyLeading: false, // so we control the leading
+        flexibleSpace: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                ChevronButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  direction: 'left',
+                ),
+                const SizedBox(width: 16),
+                const Expanded(
+                  child: Text(
+                    'Add Custom Habit',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+                // Add more actions here if needed
+              ],
+            ),
           ),
         ),
-        title: const Text('Add Habit'),
       ),
       body: Stack(
         children: [
@@ -206,17 +220,23 @@ class _AddHabitsScreenState extends State<AddHabitsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Add New Habit',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
                   TextFormField(
                     controller: _nameController,
+                    cursorColor: Colors.blue, // 👈 cursor color
                     decoration: const InputDecoration(
-                      labelText: 'Habit Name',
-                      border: OutlineInputBorder(),
+                      labelText: 'Name',
+                      labelStyle: TextStyle(
+                          color:
+                              Colors.blue), // 👈 label color when not focused
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
                     ),
+                    style: const TextStyle(
+                        color: Colors.black), // 👈 input text color
                   ),
                   const SizedBox(height: 16),
                   TextFormField(

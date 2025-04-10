@@ -40,22 +40,26 @@ class ChevronButton extends StatelessWidget {
           ? (backgroundColor ?? Colors.transparent)
           : Colors.transparent,
       borderRadius: BorderRadius.circular(10),
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: const Color.fromARGB(255, 234, 236, 240),
-              width: 1,
+      child: SizedBox(
+        width: 48,
+        height: 48,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: const Color.fromARGB(255, 234, 236, 240),
+                width: 1,
+              ),
             ),
-          ),
-          child: Center(
-            child: RotatedBox(
-              quarterTurns: _getQuarterTurns(),
-              child: Icon(_getChevronIcon()),
+            child: Center(
+              child: RotatedBox(
+                quarterTurns: _getQuarterTurns(),
+                child: Icon(_getChevronIcon()),
+              ),
             ),
           ),
         ),
