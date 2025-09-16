@@ -57,6 +57,7 @@ class SignUpContinue extends StatelessWidget {
                   height: 20,
                   hintText: "Please enter your password",
                   width: 345,
+                  showPasswordToggle: true,
                   type: TextInputType.visiblePassword,
                   obsured: true,
                   controller: controller.signUpPassword,
@@ -75,6 +76,7 @@ class SignUpContinue extends StatelessWidget {
                   hintText: "Please enter your password again",
                   width: 345,
                   type: TextInputType.visiblePassword,
+                  showPasswordToggle: true,
                   obsured: true,
                   controller: controller.signUpConfroimPassword,
                   validator: (value) {

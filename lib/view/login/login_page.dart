@@ -73,6 +73,7 @@ class LoginPage extends StatelessWidget {
                   width: 345,
                   type: TextInputType.visiblePassword,
                   obsured: true,
+                  showPasswordToggle: true,
                   controller: controller.passwordLogin,
                   validator: (value) {
                     if (value == null || value.isEmpty) {

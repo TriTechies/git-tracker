@@ -57,7 +57,7 @@ class SignUp extends StatelessWidget {
                   height: 20,
                   hintText: "SURNAME",
                   width: 345,
-                  type: TextInputType.visiblePassword,
+                  type: TextInputType.name,
                   obsured: false,
                   controller: controller.surname,
                   validator: (value) {
@@ -74,7 +74,7 @@ class SignUp extends StatelessWidget {
                   height: 20,
                   hintText: "02/02/2025",
                   width: 345,
-                  type: TextInputType.visiblePassword,
+                  type: TextInputType.datetime,
                   obsured: false,
                   controller: controller.dateofBirth,
                   validator: (value) {

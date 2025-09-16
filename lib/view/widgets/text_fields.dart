@@ -14,6 +14,7 @@ class CustomTextField extends StatefulWidget {
     this.count,
     this.validator,
     this.textHeading = '',
+    
   });
 
   final String hintText;
@@ -26,6 +27,7 @@ class CustomTextField extends StatefulWidget {
   final int? count;
   final String? Function(String?)? validator;
   final String textHeading;
+
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -60,6 +62,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             maxLength: widget.count,
             keyboardType: widget.type,
             obscureText: _isObscure,
+            
             controller: widget.controller,
             validator: widget.validator,
             decoration: InputDecoration(

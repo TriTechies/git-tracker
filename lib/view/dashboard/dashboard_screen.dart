@@ -32,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   void _onItemTapped(int index) {
     if (index == 1) {
-      // Navigate to Add Habit Screen
+    
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const AddHabitsScreen()),
@@ -57,12 +57,12 @@ class _DashboardScreenState extends State<DashboardScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Habit',
+          'Activity',
           style: TextStyle(fontWeight: FontWeight.w800),
         ),
         backgroundColor: Colors.white,
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(40), // Adjusted height
+          preferredSize: const Size.fromHeight(40),
           child: _buildCustomTabBar(),
         ),
       ),
@@ -86,11 +86,10 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  /// Custom TabBar with smaller size
   Widget _buildCustomTabBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(
-          horizontal: 16, vertical: 4), // Reduced padding
+          horizontal: 16, vertical: 4),
       child: Container(
         height: 36, // Reduced height
         decoration: BoxDecoration(
@@ -112,7 +111,7 @@ class _DashboardScreenState extends State<DashboardScreen>
             unselectedLabelColor: Colors.grey[800], // Unselected tab text color
             indicatorSize: TabBarIndicatorSize.tab,
             labelStyle: const TextStyle(
-                fontWeight: FontWeight.bold), // Smaller font size
+                fontWeight: FontWeight.bold), 
             tabs: const [
               Tab(text: 'Daily'),
               Tab(text: 'Weekly'),
@@ -139,7 +138,6 @@ class _DashboardScreenState extends State<DashboardScreen>
           const SizedBox(height: 20),
           HabitGraph(interval: interval),
           const SizedBox(height: 20),
-          // Your Habits section with Delete All button
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

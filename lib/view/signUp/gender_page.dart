@@ -14,13 +14,49 @@ class GenderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<TextController>();
     final serviceController = Get.find<UsersDao>();
+    
+    void handleNextPressed() async {
+      try {
+        final selectedGenders = controller.getSelectedCardNames();
+        final selectedGender = selectedGenders.isNotEmpty 
+            ? selectedGenders.first 
+            : 'Not specified';
+
+        final userData = {
+          'name': '${controller.name.text} ${controller.surname.text}',
+          'email': controller.signUpEmail.text,
+          'password': controller.signUpPassword.text,
+          'date_of_birth': controller.dateofBirth.text,
+          
+          'gender': selectedGender,
+        };
+
+        final userId = await serviceController.insertUser(userData);
+        print('User created with ID: $userId');
+
+        await serviceController.printUsersTable();
+
+        Get.toNamed('/options');
+      } catch (e) {
+        Get.snackbar(
+          'Error',
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    }
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
         title: Text(
@@ -41,48 +77,41 @@ class GenderPage extends StatelessWidget {
                   fontFamily: "Segoe UI", size: 14, color: Colors.black),
             ),
           ),
-          const SizedBox(
-            height: 20,
+          const SizedBox(height: 20),
+          
+         
+         const  Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: MyCardRow(
+                    image: "male",
+                    text: "Male",
+                  ),
+                ),
+                 SizedBox(width: 20),
+                Expanded(
+                  child: MyCardRow(
+                    image: "female",
+                    text: "Female",
+                  ),
+                ),
+              ],
+            ),
           ),
-          const MyCardRow(
-              imageFirst: "male",
-              textFirst: "Male",
-              imageSecond: "female",
-              textSecond: "Female")
         ],
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: MyButton(
-          name: "Next",
-          onPressed: () async {
-            Get.toNamed('/options');
-            try {
-              final userData = {
-                'name': '${controller.name.text} ${controller.surname.text}',
-                'email': controller.signUpEmail.text,
-                'password': controller.signUpPassword.text,
-                'date_of_birth': controller.dateofBirth.text,
-                'gender': controller.selectedCards[0].value ? 'Male' : 'Female',
-              };
-
-              final userId = await serviceController.insertUser(userData);
-              print('User created with ID: $userId');
-
-              await serviceController.printUsersTable();
-
-              Get.toNamed('/options');
-            } catch (e) {
-              Get.snackbar(
-                'Error',
-                e.toString(),
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: Colors.red,
-                colorText: Colors.white,
-              );
-            }
-          },
-        ),
+        child: Obx(() {
+          final hasSelection = controller.getSelectedCardNames().isNotEmpty;
+          return MyButton(
+            name: "Next",
+            onPressed: hasSelection ? handleNextPressed : () {}, 
+          );
+        }),
       ),
     );
   }

@@ -55,15 +55,15 @@ class _HabitGraphState extends State<HabitGraph> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _isExpanded = !_isExpanded; // Toggle accordion state
+          _isExpanded = !_isExpanded; 
         });
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white, // Background color
+          color: Colors.white,
           border: Border.all(
               color: const Color.fromARGB(255, 243, 244, 246),
-              width: 1), // Border
+              width: 1),
           borderRadius: BorderRadius.circular(20), // Rounded corners
         ),
         child: Padding(
@@ -108,7 +108,7 @@ class _HabitGraphState extends State<HabitGraph> {
                   ChevronButton(
                     onPressed: () {
                       setState(() {
-                        _isExpanded = !_isExpanded; // Toggle accordion state
+                        _isExpanded = !_isExpanded; 
                       });
                     },
                     direction: _isExpanded ? "up" : "down",

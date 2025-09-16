@@ -100,13 +100,11 @@ class _StatusWidgetState extends State<StatusWidget> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: const Color.fromARGB(
-                              255, 243, 244, 246), // Background color
+                              255, 243, 244, 246), 
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.trending_up_sharp,
-                          ),
+                        child:  Padding(
+                          padding:const  EdgeInsets.all(8.0),
+                          child: Image.asset('assets/eyes.png')
                         ),
                       ), // Icon next to title
                       const SizedBox(width: 8),
